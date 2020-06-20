@@ -1,0 +1,9 @@
+[submodule "glfw"]
+	path = dependencies/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "glm"]
+	path = dependencies/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "glad-3.3"]
+	path = dependencies/glad-3.3
+	url = https://github.com/dargonfyl/glad-3.3.git
