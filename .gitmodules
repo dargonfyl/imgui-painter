@@ -7,3 +7,8 @@
 [submodule "dependencies/glad-3.33"]
 	path = dependencies/glad-3.3
 	url = https://github.com/dargonfyl/glad-3.3.git
+[submodule "imgui"]
+	path = dependencies/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "dependencies/imgui/"]
+	branch = docking
