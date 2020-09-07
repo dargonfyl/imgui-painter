@@ -72,6 +72,22 @@ GLFWwindow *init_window() {
 
 
 /**
+ * Initializes imgui functionality
+ */
+void init_imgui(GLFWwindow *window) {
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO &io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;  // Enable some nice imgui features
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	ImGui::StyleColorsClassic();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init("#version 330 core");
+}
+
+
+/**
  * Read a shader program from a file path.
  */
 std::string read_shader(const char *path) {
@@ -108,13 +124,7 @@ int main() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetKeyCallback(window, key_callback);
 
-
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	ImGui::StyleColorsClassic();
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init("#version 330 core");
+	init_imgui(window);
 
 	float vertices[] = {
 		// positions         // colors
@@ -170,18 +180,19 @@ int main() {
 
 	glDeleteShader(vs);
 	glDeleteShader(fs);
-
+	ImVec4 clear_color = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
 	bool show_demo_window = true;
 	bool show_another_window = false;
 
 	while (!glfwWindowShouldClose(window)) {
-		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glBindVertexArray(VAO);
 		glUseProgram(shader_program);
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindVertexArray(0);
 
 		glfwPollEvents();
 
@@ -203,7 +214,7 @@ int main() {
 			ImGui::Checkbox("Another Window", &show_another_window);
 
 			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-			// ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+			ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
 			if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
 				counter++;
@@ -214,7 +225,7 @@ int main() {
 			ImGui::End();
 		}
 
-		{
+		if (show_another_window) {
 			ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
 			ImGui::Text("Hello from another window!");
 			if (ImGui::Button("Close Me"))
@@ -224,14 +235,29 @@ int main() {
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		// Update and Render additional Platform Windows
+		// (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
+		//  For this specific demo app we could also call glfwMakeContextCurrent(window) directly)
+		if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			GLFWwindow *backup_current_context = glfwGetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			glfwMakeContextCurrent(backup_current_context);
+		}
+
 		glfwSwapBuffers(window);
-
-
 	}
 
 	glDeleteBuffers(1, &VBO);
 	glDeleteVertexArrays(1, &VAO);
 
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+
+	glfwDestroyWindow(window);
 	glfwTerminate();
 
 	return 0;
