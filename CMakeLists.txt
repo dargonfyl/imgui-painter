@@ -21,31 +21,30 @@ file(GLOB_RECURSE HEADER_FILES
 )
 
 # TODO: Put the imgui stuff into some sort of wrapper (like imgui-cmake), rather than directly adding it to src.
-file(GLOB IMGUI_SRCFILES ${CMAKE_SOURCE_DIR}/dependencies/imgui/*.cpp)
+# file(GLOB IMGUI_SRCFILES ${CMAKE_SOURCE_DIR}/dependencies/imgui/*.cpp)
 
-file(GLOB IMGUI_HEADER_FILES
-	${CMAKE_SOURCE_DIR}/dependencies/imgui/*.h
-)
+# file(GLOB IMGUI_HEADER_FILES
+# 	${CMAKE_SOURCE_DIR}/dependencies/imgui/*.h
+# )
 
-set(IMGUI_IMPL
-	${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/imgui_impl_glfw.h
-	${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/imgui_impl_glfw.cpp
-	${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/imgui_impl_opengl3.cpp
-	${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/imgui_impl_opengl3.h
-)
+# set(IMGUI_IMPL
+# 	${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/imgui_impl_glfw.h
+# 	${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/imgui_impl_glfw.cpp
+# 	${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/imgui_impl_opengl3.cpp
+# 	${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/imgui_impl_opengl3.h
+# )
 
 include_directories(
 	"${CMAKE_SOURCE_DIR}/src"
 	"${CMAKE_SOURCE_DIR}/include"
-	"${CMAKE_SOURCE_DIR}/dependencies/imgui/"
-	"${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/"
+	# "${CMAKE_SOURCE_DIR}/dependencies/imgui/"
+	# "${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/"
 )
 
-add_executable(main ${SRCFILES} ${HEADER_FILES} ${IMGUI_SRCFILES} ${IMGUI_HEADER_FILES} ${IMGUI_IMPL})
+# add_executable(main ${SRCFILES} ${HEADER_FILES} ${IMGUI_SRCFILES} ${IMGUI_HEADER_FILES} ${IMGUI_IMPL})
+add_executable(main ${SRCFILES} ${HEADER_FILES})
 
 
-# Dependencies
-# TODO: a CMakeLists.txt for /dependencies? It would make this part a lot less ugly, but it would be very unecessary.
 # OpenGL
 find_package(OpenGL REQUIRED)
 if(WIN32)
@@ -56,26 +55,6 @@ elseif(APPLE)
 endif()
 
 
-# GLAD
-add_subdirectory(dependencies/glad-3.3/)
-target_link_libraries(main glad)
-
-
-# GLFW
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE) # These prevent GLFW from building unecessary stuff
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(ENKITS_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_INSTALL OFF CACHE BOOL "" FORCE)
-add_subdirectory(${CMAKE_SOURCE_DIR}/dependencies/glfw)
-include_directories(${CMAKE_SOURCE_DIR}/dependencies/glfw/include)
-target_link_libraries(main glfw)
-
-
-# GLM
-set(GLM_TEST_ENABLE      OFF CACHE INTERNAL "")
-set(BUILD_SHARED_LIBS    OFF CACHE INTERNAL "")
-set(BUILD_STATIC_LIBS    OFF CACHE INTERNAL "")
-add_subdirectory(${CMAKE_SOURCE_DIR}/dependencies/glm)
-include_directories(${CMAKE_SOURCE_DIR}/dependencies/glm/glm)
-target_link_libraries(main glm)
+# Include dependencies
+add_subdirectory(dependencies/)
+target_link_libraries(main glad glm glfw imgui)
