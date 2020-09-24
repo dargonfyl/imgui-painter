@@ -1,5 +1,5 @@
-# GGG Template
-glad, glm, and glfw all in one. Inspired by [bigg](https://github.com/JoshuaBrookover/bigg).
+# GIGG Template
+glad, imgui, glm, and glfw all in one template. Inspired by [bigg](https://github.com/JoshuaBrookover/bigg). Meant for game engine and/or graphics development.
 
 ## Requirements
 You will need:
@@ -14,7 +14,6 @@ $ cd build
 $ cmake .. [-G your-target-generator]
 $ cmake --build .
 ```
-__NOTE:__ You should configure with 64-bit. To quote the Linux manuals, _undefined behaviour_ may occur if you do not.
 
 ## License
 Licensed under The Unlicense, that is, you're pretty much free to do whatever you want with this code, and there is no warranty/liability.
