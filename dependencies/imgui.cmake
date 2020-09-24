@@ -12,6 +12,7 @@ add_library(
 )
 target_include_directories(imgui PUBLIC ${CMAKE_CURRENT_LIST_DIR}/imgui)
 target_include_directories(imgui PUBLIC ${CMAKE_CURRENT_LIST_DIR}/imgui/examples)
+
 add_compile_definitions(IMGUI_IMPL_OPENGL_LOADER_GLAD)  # Sometimes, MSVC doesn't have correct preprocessor definitions
 
 # GLAD and GLFW should have already been found, otherwise the impl files won't work.
