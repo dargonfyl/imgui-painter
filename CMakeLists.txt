@@ -13,35 +13,18 @@ file(GLOB_RECURSE SRCFILES
 	${CMAKE_SOURCE_DIR}/src/*.c
 	${CMAKE_SOURCE_DIR}/src/*.cpp
 )
-	
+
 # Add header files
 file(GLOB_RECURSE HEADER_FILES 
 	${CMAKE_SOURCE_DIR}/include/*.h
 	${CMAKE_SOURCE_DIR}/include/*.hpp
 )
 
-# TODO: Put the imgui stuff into some sort of wrapper (like imgui-cmake), rather than directly adding it to src.
-# file(GLOB IMGUI_SRCFILES ${CMAKE_SOURCE_DIR}/dependencies/imgui/*.cpp)
-
-# file(GLOB IMGUI_HEADER_FILES
-# 	${CMAKE_SOURCE_DIR}/dependencies/imgui/*.h
-# )
-
-# set(IMGUI_IMPL
-# 	${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/imgui_impl_glfw.h
-# 	${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/imgui_impl_glfw.cpp
-# 	${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/imgui_impl_opengl3.cpp
-# 	${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/imgui_impl_opengl3.h
-# )
-
 include_directories(
 	"${CMAKE_SOURCE_DIR}/src"
 	"${CMAKE_SOURCE_DIR}/include"
-	# "${CMAKE_SOURCE_DIR}/dependencies/imgui/"
-	# "${CMAKE_SOURCE_DIR}/dependencies/imgui/examples/"
 )
 
-# add_executable(main ${SRCFILES} ${HEADER_FILES} ${IMGUI_SRCFILES} ${IMGUI_HEADER_FILES} ${IMGUI_IMPL})
 add_executable(main ${SRCFILES} ${HEADER_FILES})
 
 
