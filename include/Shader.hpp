@@ -1,21 +1,18 @@
 #pragma once
 
-#include <glad/glad.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <iostream>
-#include <sstream>
-#include <fstream>
 #include <string>
-#include <assert.h>
+#include <glm/glm.hpp>
+
 
 namespace Im_Painter {
+	typedef unsigned int Shader_id_t;
+
 	/**
 	 * Shader class. Handles all shader functionality, including uniform setting. 
 	 */
 	class Shader {
 		private:
-		GLuint id;  // Equal to the shader's program id in OpenGL. These are set by OpenGL, so there is no order whatsoever in them.
+		Shader_id_t id;  // Equal to the shader's program id in OpenGL. These are set by OpenGL, so there is no order whatsoever in them.
 
 
 		public:
@@ -38,6 +35,12 @@ namespace Im_Painter {
 		 * Deconstructor. Deletes the associated shader program.
 		 */
 		~Shader();
+
+
+		/**
+		 * 
+		 */
+		Shader_id_t get_id();
 
 
 		/**

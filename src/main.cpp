@@ -133,21 +133,12 @@ int main() {
 		0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top
 	};
 
-	// Set up buffers
-	GLuint VBO, VAO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, (GLvoid *)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 6, (GLvoid *)(sizeof(GLfloat) * 3));
-	glEnableVertexAttribArray(1);
-
 	// Compile shaders & link
-	Im_Painter::Shader *shader = new Im_Painter::Shader("../shaders/triangle.vs", "../shaders/triangle.fs");
+	// Im_Painter::Shader *shader = new Im_Painter::Shader("../shaders/triangle.vs", "../shaders/triangle.fs");
+	Im_Painter::Shader shader = Im_Painter::Shader("../shaders/quad.vs", "../shaders/quad.fs");
+
+	// Renderer setup
+	Im_Painter::Renderer *renderer = new Im_Painter::Renderer(shader);
 
 	ImVec4 clear_color = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
 	bool show_demo_window = true;
@@ -157,11 +148,7 @@ int main() {
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBindVertexArray(VAO);
-		shader->activate();
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindVertexArray(0);
+		renderer->render();
 
 		glfwPollEvents();
 
@@ -205,9 +192,6 @@ int main() {
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		// Update and Render additional Platform Windows
-		// (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
-		//  For this specific demo app we could also call glfwMakeContextCurrent(window) directly)
 		if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			GLFWwindow *backup_current_context = glfwGetCurrentContext();
@@ -219,8 +203,6 @@ int main() {
 		glfwSwapBuffers(window);
 	}
 
-	glDeleteBuffers(1, &VBO);
-	glDeleteVertexArrays(1, &VAO);
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();

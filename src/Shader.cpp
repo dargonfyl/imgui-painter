@@ -1,5 +1,12 @@
 #include "Shader.hpp"
 
+#include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <assert.h>
+
 
 namespace {
 	/**
@@ -76,7 +83,7 @@ namespace Im_Painter {
 
 		GLuint vs, fs;
 		vs = glCreateShader(GL_VERTEX_SHADER);
-		assert(vs != 0 && "Shader::constructor:\n glCreateShader returned 0 for vertex shader\n");
+		assert(vs != 0 && "Shader::constructor:\n glCreateShader returned 0 for vertex shader\n");  // TODO: non-assert gl checks
 		glShaderSource(vs, 1, &vertex_code, 0);
 		glCompileShader(vs);
 		check_shader_error(vs, "Shader::constructor:\n");
@@ -104,6 +111,11 @@ namespace Im_Painter {
 
 	Shader::~Shader() {
 		glDeleteProgram(id);
+	}
+
+
+	Shader_id_t Shader::get_id() {
+		return this->id;
 	}
 
 
