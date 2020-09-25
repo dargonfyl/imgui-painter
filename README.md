@@ -1,10 +1,10 @@
-# GIGG Template
-glad, imgui, glm, and glfw all in one template. Inspired by [bigg](https://github.com/JoshuaBrookover/bigg). Meant for game engine and/or graphics development.
+# IMGUI Painter
+A simple imgui painter.
 
 ## Requirements
 You will need:
 - OpenGL version 3.3+ capable system
-- CMake installed
+- CMake 3.0+ installed
 
 ## Building
 Run the following:
