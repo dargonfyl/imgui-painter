@@ -147,39 +147,8 @@ int main() {
 	glEnableVertexAttribArray(1);
 
 	// Compile shaders & link
-	std::string vertex_code = read_shader("../shaders/triangle.vs");
-	std::string fragment_code = read_shader("../shaders/triangle.fs");
+	Im_Painter::Shader *shader = new Im_Painter::Shader("../shaders/triangle.vs", "../shaders/triangle.fs");
 
-	const char *cvertex_code = vertex_code.c_str();  // Note: doing std::stringstream::str().c_str() causes funny problems in linking
-	const char *cfragment_code = fragment_code.c_str();
-	GLuint vs, fs;
-	vs = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vs, 1, &cvertex_code, 0);
-	glCompileShader(vs);
-	check_shader_error(vs, "Vertex shader:\n");
-
-	fs = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fs, 1, &cfragment_code, 0);
-	glCompileShader(fs);
-	check_shader_error(fs, "Fragment shader:\n");
-
-	GLuint shader_program = glCreateProgram();
-	glAttachShader(shader_program, vs);
-	glAttachShader(shader_program, fs);
-	glLinkProgram(shader_program);
-
-	// Check for shader program errors
-	int success;
-	glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
-	if (!success) {
-		char err_message[512];
-		glGetProgramInfoLog(shader_program, 512, NULL, err_message);
-		std::cerr << "Error: Program failed to link\n" << err_message << std::endl;
-		exit(EXIT_FAILURE);
-	}
-
-	glDeleteShader(vs);
-	glDeleteShader(fs);
 	ImVec4 clear_color = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
 	bool show_demo_window = true;
 	bool show_another_window = false;
@@ -189,7 +158,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glBindVertexArray(VAO);
-		glUseProgram(shader_program);
+		shader->activate();
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindVertexArray(0);
