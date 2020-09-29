@@ -20,3 +20,7 @@ add_subdirectory(glm/)
 
 # IMGUI
 include(imgui.cmake)
+
+
+# stb
+include(stb.cmake)

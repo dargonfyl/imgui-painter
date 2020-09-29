@@ -40,4 +40,4 @@ endif()
 
 # Include dependencies
 add_subdirectory(dependencies/)
-target_link_libraries(main glad glm glfw imgui)
+target_link_libraries(main glad glm glfw imgui stb)
