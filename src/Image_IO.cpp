@@ -18,8 +18,9 @@ namespace Im_Painter {
 		assert(data && "Im_Painter::Image_IO::read: stbi_load returned no data");
 
 		Texture_Format format = alpha ? RGBA : RGB;
-
-		return Texture(width, height, data, format, format);
+		Texture tex = Texture(width, height, 1, data, format, format);
+		free(data);
+		return tex;
 	}
 
 
@@ -30,8 +31,7 @@ namespace Im_Painter {
 		assert(data && "Im_Painter::Image_IO::read: stbi_load returned no data");
 
 		Texture_Format format = alpha ? RGBA : RGB;
-
-		Texture tex = Texture(width, height, data, format, format);
+		Texture tex = Texture(width, height, 1, data, format, format);
 		free(data);
 		return tex;
 	}

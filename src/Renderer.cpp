@@ -86,6 +86,8 @@ namespace Im_Painter {
 		assert(this->VAO != 0 && "VAO == 0 when trying to draw sprite");
 		glBindVertexArray(this->VAO);
 
+		// shader.set_int("u_sprite", GL_TEXTURE0);
+
 		glActiveTexture(GL_TEXTURE0);
 		texture.bind();
 

@@ -49,7 +49,8 @@ namespace Im_Painter {
 		void activate();
 
 		/**
-		 * 
+		 * @param name  Uniform name
+		 * @param value Uniform value
 		 */
 		void set_int(const std::string &name, int value);
 
@@ -57,20 +58,22 @@ namespace Im_Painter {
 		/**
 		 * Sets a uniform for a float.
 		 * 
-		 * @param name
-		 * @param value
+		 * @param name  Uniform name
+		 * @param value Uniform value
 		 */
 		void set_float(const std::string &name, float value);
 
 
 		/**
-		 * 
+		 * @param name  Uniform name
+		 * @param value Uniform value
 		 */
 		void set_bool(const std::string &name, bool value);
 
 
 		/**
-		 * 
+		 * @param name  Uniform name
+		 * @param value Uniform value
 		 */
 		void set_vec2(const std::string & name, glm::vec2 value);
 
@@ -78,14 +81,15 @@ namespace Im_Painter {
 		/**
 		 * Sets a vec3 uniform.
 		 * 
-		 * @param name
-		 * @param value
+		 * @param name  Uniform name
+		 * @param value Uniform value
 		 */
 		void set_vec3(const std::string &name, glm::vec3 value);
 
 
 		/**
-		 * 
+		 * @param name  Uniform name
+		 * @param value Uniform value
 		 */
 		void set_vec4(const std::string &name, glm::vec4 value);
 
@@ -93,8 +97,8 @@ namespace Im_Painter {
 		/**
 		 * Sets a mat4 uniform.
 		 * 
-		 * @param name
-		 * @param value
+		 * @param name  Uniform name
+		 * @param value Uniform value
 		 */
 		void set_mat4(const std::string &name, glm::mat4 value);
 	};
