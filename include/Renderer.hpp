@@ -1,8 +1,7 @@
 #pragma once
 
-
-#include <Shader.hpp>
-
+#include "Shader.hpp"
+#include "Texture.hpp"
 
 namespace Im_Painter {
 	class Renderer {
@@ -19,5 +18,8 @@ namespace Im_Painter {
 		~Renderer();
 
 		void render();
+
+		void render(Texture &texture);
+		
 	};
 } // namespace Im_Painter

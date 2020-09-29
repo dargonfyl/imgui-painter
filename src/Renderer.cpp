@@ -67,4 +67,31 @@ namespace Im_Painter {
 		glBindVertexArray(0);
 		glUseProgram(0);
 	}
+
+
+	void Renderer::render(Texture &texture) {
+		// We need to do the same thing as above, but bind a texture.
+
+		this->shader.activate();  // TODO: clean this shit up
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(600.0f, 800.0f, 1.0f));  // (height, width, z-scale)
+		shader.set_mat4("model", model);
+
+		glm::mat4 projection = glm::ortho(0.0f, 600.0f, 800.0f, 0.0f, -1.0f, 1.0f);
+		shader.set_mat4("projection", projection);
+
+		shader.set_vec4("u_colour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));  // TODO: ughhhhhh fix uniform names
+
+		assert(this->VAO != 0 && "VAO == 0 when trying to draw sprite");
+		glBindVertexArray(this->VAO);
+
+		glActiveTexture(GL_TEXTURE0);
+		texture.bind();
+
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindVertexArray(0);
+		glActiveTexture(0);  // TODO: uhhhhhhh idk, texture0 is on by default, this may literally just do nothing.
+		glUseProgram(0);
+	}
 }
