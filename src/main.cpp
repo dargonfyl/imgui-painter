@@ -140,7 +140,8 @@ int main() {
 	// Renderer setup
 	Im_Painter::Renderer *renderer = new Im_Painter::Renderer(shader);
 
-	Im_Painter::Texture tex = Im_Painter::Image_IO::read("../data/awesomeface.png", true);
+	Im_Painter::Canvas canvas = Im_Painter::Image_IO::canvas_from_image("../data/canvas.jpg");
+	Im_Painter::Image_IO::layer_from_image("../data/awesomeface.png", canvas);
 
 	ImVec4 clear_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	bool show_demo_window = true;
@@ -150,6 +151,7 @@ int main() {
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		Im_Painter::Texture tex = canvas.to_texture();
 		renderer->render(tex);
 
 		glfwPollEvents();
