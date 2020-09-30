@@ -23,11 +23,11 @@ namespace Im_Painter {
 		};
 
 		glGenVertexArrays(1, &this->VAO);
-		assert(this->VAO != 0 && "Renderer:constructor: glGenVertexArrays returned 0");  // TODO: non-assert gl checks
+		assert(this->VAO != 0 && "Renderer::constructor: glGenVertexArrays returned 0");  // TODO: non-assert gl checks
 		glBindVertexArray(VAO);
 
 		glGenBuffers(1, &this->VBO);
-		assert(this->VAO != 0 && "Renderer:constructor: glGenBuffers returned 0");
+		assert(this->VAO != 0 && "Renderer::constructor: glGenBuffers returned 0");
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(layer), layer, GL_STATIC_DRAW);
 
@@ -69,19 +69,19 @@ namespace Im_Painter {
 	}
 
 
-	void Renderer::render(Texture &texture) {
+	void Renderer::render(Texture &texture, unsigned int num_layers) {
 		// We need to do the same thing as above, but bind a texture.
 
 		this->shader.activate();  // TODO: clean this shit up
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(600.0f, 800.0f, 1.0f));  // (height, width, z-scale)
-		shader.set_mat4("model", model);
+		shader.set_mat4("u_model", model);
 
 		glm::mat4 projection = glm::ortho(0.0f, 600.0f, 800.0f, 0.0f, -1.0f, 1.0f);
-		shader.set_mat4("projection", projection);
+		shader.set_mat4("u_projection", projection);
 
-		shader.set_vec4("u_colour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));  // TODO: ughhhhhh fix uniform names
+		shader.set_int("u_num_layers", num_layers);
 
 		assert(this->VAO != 0 && "VAO == 0 when trying to draw sprite");
 		glBindVertexArray(this->VAO);

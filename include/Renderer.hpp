@@ -19,7 +19,7 @@ namespace Im_Painter {
 
 		void render();
 
-		void render(Texture &texture);
-		
+		void render(Texture &texture, unsigned int num_layers);
+
 	};
 } // namespace Im_Painter

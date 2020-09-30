@@ -2,7 +2,6 @@
 
 in vec2 tex_coord;
 
-uniform vec4 u_colour;
 uniform sampler2DArray u_sprite;
 uniform int u_num_layers;
 
@@ -23,7 +22,9 @@ vec4 alpha_composite(vec4 front, vec4 back) {
 
 
 void main() {
-	colour = u_colour * alpha_composite(texture(u_sprite, vec3(tex_coord, 1.0)), texture(u_sprite, vec3(tex_coord, 0.0)));
+	colour = texture(u_sprite, vec3(tex_coord, 0.0));
 
-	// colour = u_colour * texture(u_sprite, tex_coord);
+	for (int i = 1; i < u_num_layers; i++) {
+		colour = alpha_composite(texture(u_sprite, vec3(tex_coord, float(i))), colour);
+	}
 }
