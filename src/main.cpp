@@ -126,13 +126,6 @@ int main() {
 
 	init_imgui(window);
 
-	float vertices[] = {
-		// positions         // colors
-		0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-		0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top
-	};
-
 	// Compile shaders & link
 	// Im_Painter::Shader *shader = new Im_Painter::Shader("../shaders/triangle.vs", "../shaders/triangle.fs");
 	Im_Painter::Shader shader = Im_Painter::Shader("../shaders/quad.vs", "../shaders/quad.fs");
