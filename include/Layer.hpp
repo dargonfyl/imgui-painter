@@ -13,7 +13,6 @@ namespace Im_Painter {
 	 */
 	class Layer {
 		private:
-		layer_size_t height, width;
 		std::vector<unsigned char> data;
 
 

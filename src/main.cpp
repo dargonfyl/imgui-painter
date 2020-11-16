@@ -19,6 +19,20 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 		glfwSetWindowShouldClose(window, true);
 }
 
+int x_mouse_position = 0;
+int y_mouse_position = 0;
+void canvas_cursor_callback(GLFWwindow* window, double xpos, double ypos) {
+	x_mouse_position = static_cast<int>(xpos);
+	y_mouse_position = static_cast<int>(ypos);
+}
+
+Im_Painter::Canvas canvas = Im_Painter::Image_IO::canvas_from_image("../data/canvas.jpg");
+void canvas_click_callback(GLFWwindow* window, int button, int action, int mods) {
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+		canvas.paint(x_mouse_position, y_mouse_position);
+	}
+}
+
 
 /**
  * Initializes a GLFW window & sets GLFW/GL states.
@@ -123,6 +137,8 @@ int main() {
 	GLFWwindow *window = init_window();
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetKeyCallback(window, key_callback);
+	glfwSetCursorPosCallback(window, canvas_cursor_callback);
+	glfwSetMouseButtonCallback(window, canvas_click_callback);
 
 	init_imgui(window);
 
@@ -133,11 +149,11 @@ int main() {
 	// Renderer setup
 	Im_Painter::Renderer *renderer = new Im_Painter::Renderer(shader);
 
-	Im_Painter::Canvas canvas = Im_Painter::Image_IO::canvas_from_image("../data/canvas.jpg");
-	Im_Painter::Image_IO::layer_from_image("../data/awesomeface.png", canvas);
-	Im_Painter::Image_IO::layer_from_image("../data/thunder.png", canvas);
+	// Im_Painter::Canvas canvas = Im_Painter::Image_IO::canvas_from_image("../data/canvas.jpg");
+	// Im_Painter::Image_IO::layer_from_image("../data/awesomeface.png", canvas);
+	// Im_Painter::Image_IO::layer_from_image("../data/thunder.png", canvas);
 
-	ImVec4 clear_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	ImVec4 clear_color = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
 	bool show_demo_window = true;
 	bool show_another_window = false;
 

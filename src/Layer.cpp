@@ -9,18 +9,12 @@ namespace Im_Painter {
 		unsigned char buf[total_bytes];
 		memset(buf, 0, total_bytes);
 		this->data = std::vector<unsigned char>(buf, buf + total_bytes);
-
-		this->height = height;
-		this->width = width;
 	}
 
 
 	Layer::Layer(unsigned char *data, layer_size_t height, layer_size_t width) {
 		unsigned int total_bytes = 4 * height * width;
 		this->data = std::vector<unsigned char>(data, data + total_bytes);  // Iterator version, start to end (inclusive)
-
-		this->height = height;
-		this-> width = width;
 	}
 
 

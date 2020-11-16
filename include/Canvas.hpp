@@ -73,6 +73,9 @@ namespace Im_Painter
 		void new_layer(unsigned char *data);
 
 
+		void paint(int x_mouse_pos, int y_mouse_pos);
+
+
 		canvas_size_t get_height();
 
 

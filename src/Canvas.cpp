@@ -43,6 +43,10 @@ namespace Im_Painter
 			memcpy(data + i * layer_size, &layer_data[0], layer_data.size());
 		}
 
+		// TODO: change layer class and all
+		// std::vector<unsigned char> &layer_data = layers[0].get_data();
+		// unsigned char *data = &layer_data[0];
+		// std::cout << static_cast<int>(layers[0].get_data()[0]) << std::endl;
 		return Texture(width, height, layers.size(), data, RGBA, RGBA);
 	}
 
@@ -81,6 +85,17 @@ namespace Im_Painter
 
 	void Canvas::new_layer(unsigned char *data) {
 		layers.push_back(Layer(data, height, width));
+	}
+
+
+	void Canvas::paint(int x_mouse_pos, int y_mouse_pos) {
+		if (x_mouse_pos >= width || x_mouse_pos < 0) return;
+		if (y_mouse_pos >= height || y_mouse_pos < 0) return;
+		int pos = 4 * (y_mouse_pos * width + x_mouse_pos);
+		layers[0].get_data()[pos] = 0;
+		layers[0].get_data()[pos + 1] = 0;
+		layers[0].get_data()[pos + 2] = 0;
+		layers[0].get_data()[pos + 3] = 255;
 	}
 
 
