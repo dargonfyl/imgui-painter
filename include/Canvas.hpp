@@ -4,6 +4,7 @@
 
 #include "Layer.hpp"
 #include "Texture.hpp"
+#include "Brush.hpp"
 
 
 // TODO: define max dimensions for Canvas
@@ -20,6 +21,7 @@ namespace Im_Painter
 
 		std::vector<Layer> layers;
 
+		Brush brush;
 
 		public:
 		/**
@@ -74,6 +76,9 @@ namespace Im_Painter
 
 
 		void paint(int x_mouse_pos, int y_mouse_pos);
+
+
+		void set_brush_color(glm::vec4 color);
 
 
 		canvas_size_t get_height();

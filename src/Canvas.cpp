@@ -92,10 +92,13 @@ namespace Im_Painter
 		if (x_mouse_pos >= width || x_mouse_pos < 0) return;
 		if (y_mouse_pos >= height || y_mouse_pos < 0) return;
 		int pos = 4 * (y_mouse_pos * width + x_mouse_pos);
-		layers[0].get_data()[pos] = 0;
-		layers[0].get_data()[pos + 1] = 0;
-		layers[0].get_data()[pos + 2] = 0;
-		layers[0].get_data()[pos + 3] = 255;
+		unsigned char *layer_location = &layers[0].get_data()[pos];
+		brush.use(layer_location);
+	}
+	
+
+	void Canvas::set_brush_color(glm::vec4 color) {
+		brush.set_color(color);
 	}
 
 
