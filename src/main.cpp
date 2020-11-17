@@ -21,15 +21,28 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 
 int x_mouse_position = 0;
 int y_mouse_position = 0;
+int num_updates = 0;
+float last_frame = 0;
+bool click = false;
+
 void canvas_cursor_callback(GLFWwindow* window, double xpos, double ypos) {
 	x_mouse_position = static_cast<int>(xpos);
 	y_mouse_position = static_cast<int>(ypos);
+	
+	float current_frame = (float)glfwGetTime();
+
+	// Frame debug
+	std::cout << current_frame - last_frame << std::endl;
+	last_frame = current_frame;
 }
 
-Im_Painter::Canvas canvas = Im_Painter::Image_IO::canvas_from_image("../data/canvas.jpg");
 void canvas_click_callback(GLFWwindow* window, int button, int action, int mods) {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-		canvas.paint(x_mouse_position, y_mouse_position);
+		click = true;
+		// std::cout << "Pressed" << std::endl;
+	} else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+		click = false;
+		// std::cout << "Released" << std::endl;
 	}
 }
 
@@ -146,6 +159,8 @@ int main() {
 	// Im_Painter::Shader *shader = new Im_Painter::Shader("../shaders/triangle.vs", "../shaders/triangle.fs");
 	Im_Painter::Shader shader = Im_Painter::Shader("../shaders/quad.vs", "../shaders/quad.fs");
 
+	Im_Painter::Canvas canvas = Im_Painter::Image_IO::canvas_from_image("../data/canvas.jpg");
+
 	// Renderer setup
 	Im_Painter::Renderer *renderer = new Im_Painter::Renderer(shader);
 
@@ -161,10 +176,13 @@ int main() {
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		glfwPollEvents();
+		if (click) {
+			canvas.paint(x_mouse_position, y_mouse_position);
+		}
+
 		Im_Painter::Texture tex = canvas.to_texture();
 		renderer->render(tex, canvas.get_num_layers());
-
-		glfwPollEvents();
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
