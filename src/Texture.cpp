@@ -42,6 +42,7 @@ namespace Im_Painter
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_LEVEL, 4);
 
 		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+		delete[] data;
 	}
 
 

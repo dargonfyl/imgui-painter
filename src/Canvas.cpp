@@ -19,7 +19,7 @@ namespace Im_Painter
 		this->height = height;
 		this->width = width;
 
-		layers.push_back(Layer(height, width));
+		layers.push_back(Layer(height * width * 4));
 	}
 
 
@@ -28,7 +28,7 @@ namespace Im_Painter
 		this->height = height;
 		this->width = width;
 
-		layers.push_back(Layer(data, height, width));
+		layers.push_back(Layer(data, data + height * width * 4));
 	}
 
 
@@ -37,14 +37,14 @@ namespace Im_Painter
 		// Instead of memcopy, use appends
 		assert(layers.size() > 0);
 		unsigned int layer_size = height * width * 4;
-		unsigned char data[layer_size * layers.size()];
+		unsigned char *data = (unsigned char *)malloc(layer_size * layers.size());
 		for (int i = 0; i < layers.size(); i++) {
-			std::vector<unsigned char> &layer_data = layers[i].get_data();
+			std::vector<unsigned char> &layer_data = layers[i];
 			memcpy(data + i * layer_size, &layer_data[0], layer_data.size());
 		}
 
 		// TODO: change layer class and all
-		// std::vector<unsigned char> &layer_data = layers[0].get_data();
+		// std::vector<unsigned char> &layer_data = layers[0];
 		// unsigned char *data = &layer_data[0];
 		// std::cout << static_cast<int>(layers[0].get_data()[0]) << std::endl;
 		return Texture(width, height, layers.size(), data, RGBA, RGBA);
@@ -84,7 +84,8 @@ namespace Im_Painter
 
 
 	void Canvas::new_layer(unsigned char *data) {
-		layers.push_back(Layer(data, height, width));
+		// layers.push_back(Layer(data, height, width));
+		layers.push_back(Layer(data, data + height * width * 4));
 	}
 
 
@@ -92,7 +93,7 @@ namespace Im_Painter
 		if (x_mouse_pos >= width || x_mouse_pos < 0) return;
 		if (y_mouse_pos >= height || y_mouse_pos < 0) return;
 		int pos = 4 * (y_mouse_pos * width + x_mouse_pos);
-		unsigned char *layer_location = &layers[0].get_data()[pos];
+		unsigned char *layer_location = &layers[0][pos];
 		brush.use(layer_location);
 	}
 	

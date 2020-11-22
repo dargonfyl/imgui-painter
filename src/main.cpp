@@ -157,20 +157,21 @@ int main() {
 
 	// Compile shaders & link
 	// Im_Painter::Shader *shader = new Im_Painter::Shader("../shaders/triangle.vs", "../shaders/triangle.fs");
-	Im_Painter::Shader shader = Im_Painter::Shader("../shaders/quad.vs", "../shaders/quad.fs");
+	Im_Painter::Shader shader = Im_Painter::Shader("/Users/dennis/dev/imgui-painter/shaders/quad.vs", "/Users/dennis/dev/imgui-painter/shaders/quad.fs");
 
-	Im_Painter::Canvas canvas = Im_Painter::Image_IO::canvas_from_image("../data/canvas.jpg");
+	Im_Painter::Canvas canvas = Im_Painter::Image_IO::canvas_from_image("/Users/dennis/dev/imgui-painter/data/canvas.jpg");
 
 	// Renderer setup
 	Im_Painter::Renderer *renderer = new Im_Painter::Renderer(shader);
 
 	// Im_Painter::Canvas canvas = Im_Painter::Image_IO::canvas_from_image("../data/canvas.jpg");
-	// Im_Painter::Image_IO::layer_from_image("../data/awesomeface.png", canvas);
-	// Im_Painter::Image_IO::layer_from_image("../data/thunder.png", canvas);
+	Im_Painter::Image_IO::layer_from_image("../data/awesomeface.png", canvas);
+	Im_Painter::Image_IO::layer_from_image("../data/thunder.png", canvas);
 
 	ImVec4 clear_color = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
 	bool show_demo_window = true;
 	bool show_another_window = false;
+	bool show_layers_window = true;
 
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
@@ -220,6 +221,17 @@ int main() {
 			ImGui::Text("Hello from another window!");
 			if (ImGui::Button("Close Me"))
 				show_another_window = false;
+			ImGui::End();
+		}
+
+		if (show_layers_window) {
+			ImGui::Begin("Layers", &show_layers_window);
+
+			// TODO: All the layers
+			if (ImGui::Button("New layer")) {
+				canvas.new_layer();
+			}
+
 			ImGui::End();
 		}
 

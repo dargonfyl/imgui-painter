@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "Layer.hpp"
+// #include "Layer.hpp"
 #include "Texture.hpp"
 #include "Brush.hpp"
 
@@ -13,13 +13,13 @@ namespace Im_Painter
 {
 	typedef unsigned int canvas_size_t;       // For canvas height/widht
 	typedef unsigned int canvas_num_layers_t; // For number of layers in canvas
-
+	typedef std::vector<unsigned char> Layer;
 
 	class Canvas {
 		private:
 		canvas_size_t height, width;
 
-		std::vector<Layer> layers;
+		std::vector<std::vector<unsigned char>> layers;
 
 		Brush brush;
 
@@ -53,10 +53,6 @@ namespace Im_Painter
 		canvas_num_layers_t get_num_layers();
 
 
-		/**
-		 * New blank layer.
-		 */
-		void new_layer();
 
 
 		/**
@@ -65,6 +61,12 @@ namespace Im_Painter
 		 * @return unsigned char * of the entire canvas data
 		 */
 		unsigned char *get_data();
+
+
+		/**
+		 * New blank layer.
+		 */
+		void new_layer();
 
 
 		/**
