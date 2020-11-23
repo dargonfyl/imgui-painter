@@ -42,7 +42,7 @@ namespace Im_Painter
 		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_LEVEL, 4);
 
 		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
-		delete[] data;
+		// delete[] data;
 	}
 
 
@@ -52,12 +52,20 @@ namespace Im_Painter
 
 
 	void Texture::update(unsigned int layer_count, unsigned char *data) {
-		assert(this->id != 0 && "Im_Painter::Texture::update: id is 0");
+		assert(id != 0 && "Im_Painter::Texture::update: id is 0");
+		assert(data && "Data does not exist");
 
-		glBindTexture(GL_TEXTURE_2D_ARRAY, this->id);
-		glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, this->internal_format, width, height, layer_count, 0, this->image_format, GL_UNSIGNED_BYTE, data);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, id);
+		glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, internal_format, width, height, layer_count, 0, image_format, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);  // TODO: this stuff
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_LEVEL, 4);
+
 		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+		// delete[] data;
 	}
 
 

@@ -70,8 +70,6 @@ namespace Im_Painter {
 
 
 	void Renderer::render(Texture &texture, unsigned int num_layers) {
-		// We need to do the same thing as above, but bind a texture.
-
 		this->shader.activate();  // TODO: clean this shit up
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
@@ -90,6 +88,33 @@ namespace Im_Painter {
 
 		glActiveTexture(GL_TEXTURE0);
 		texture.bind();
+
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindVertexArray(0);
+		glActiveTexture(0);  // TODO: uhhhhhhh idk, texture0 is on by default, this may literally just do nothing.
+		glUseProgram(0);
+	}
+
+
+	void Renderer::render(Canvas &canvas) {
+		this->shader.activate();  // TODO: clean this shit up
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(600.0f, 800.0f, 1.0f));  // (height, width, z-scale)
+		shader.set_mat4("u_model", model);
+
+		glm::mat4 projection = glm::ortho(0.0f, 600.0f, 800.0f, 0.0f, -1.0f, 1.0f);
+		shader.set_mat4("u_projection", projection);
+
+		shader.set_int("u_num_layers", canvas.get_num_layers());
+
+		assert(this->VAO != 0 && "VAO == 0 when trying to draw sprite");
+		glBindVertexArray(this->VAO);
+
+		// shader.set_int("u_sprite", GL_TEXTURE0);
+
+		glActiveTexture(GL_TEXTURE0);
+		canvas.bind();
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glBindVertexArray(0);

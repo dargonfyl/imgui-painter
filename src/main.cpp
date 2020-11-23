@@ -32,7 +32,7 @@ void canvas_cursor_callback(GLFWwindow* window, double xpos, double ypos) {
 	float current_frame = (float)glfwGetTime();
 
 	// Frame debug
-	std::cout << current_frame - last_frame << std::endl;
+	// std::cout << current_frame - last_frame << std::endl;
 	last_frame = current_frame;
 }
 
@@ -157,7 +157,7 @@ int main() {
 
 	// Compile shaders & link
 	// Im_Painter::Shader *shader = new Im_Painter::Shader("../shaders/triangle.vs", "../shaders/triangle.fs");
-	Im_Painter::Shader shader = Im_Painter::Shader("/Users/dennis/dev/imgui-painter/shaders/quad.vs", "/Users/dennis/dev/imgui-painter/shaders/quad.fs");
+	Im_Painter::Shader shader = Im_Painter::Shader("/Users/dennis/dev/imgui-painter/shaders/quad.vs", "/Users/dennis/dev/imgui-painter/shaders/quad_array.fs");
 
 	Im_Painter::Canvas canvas = Im_Painter::Image_IO::canvas_from_image("/Users/dennis/dev/imgui-painter/data/canvas.jpg");
 
@@ -184,8 +184,9 @@ int main() {
 
 		canvas.set_brush_color(glm::vec4(clear_color.x, clear_color.y, clear_color.z, clear_color.w));
 
-		Im_Painter::Texture tex = canvas.to_texture();
-		renderer->render(tex, canvas.get_num_layers());
+		renderer->render(canvas);
+		// Im_Painter::Texture tex = canvas.to_texture();
+		// renderer->render(tex, canvas.get_num_layers());
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
