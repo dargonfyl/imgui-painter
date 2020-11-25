@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include <Texture.hpp>
+
 
 namespace Im_Painter {
 	typedef unsigned int layer_size_t;
@@ -14,6 +16,7 @@ namespace Im_Painter {
 	class Layer {
 		private:
 		std::vector<unsigned char> data;
+		Texture *texture;
 
 
 		public:
@@ -29,6 +32,9 @@ namespace Im_Painter {
 		Layer(unsigned char *data, layer_size_t height, layer_size_t width);
 
 
+		~Layer();
+
+
 		/**
 		 * Merges a layer into this layer. This calling layer is on top.
 		 */
@@ -36,6 +42,9 @@ namespace Im_Painter {
 
 
 		std::vector<unsigned char> &get_data();
+
+
+		void bind();
 	};
 
 } // namespace Im_Painter

@@ -22,7 +22,6 @@ namespace Im_Painter
 		layers.push_back(Layer(height, width));
 		unsigned char *data = &layers[0].get_data()[0];
 		// texture = new Texture(width, height, layers.size(), data, RGBA, RGBA);
-		texture = new Texture(width, height, layers.size(), data, RGBA, RGBA);
 		canvas_buffer = std::vector<unsigned char>(layers[0].get_data());
 	}
 
@@ -33,17 +32,17 @@ namespace Im_Painter
 		this->width = width;
 
 		layers.push_back(Layer(data, height, width));
-		texture = new Texture(width, height, layers.size(), data, RGBA, RGBA);
 		canvas_buffer = std::vector<unsigned char>(layers[0].get_data());
 	}
 
 
 	Canvas::~Canvas() {
-		delete texture;
+
 	}
 
 
 	void Canvas::update_texture() {
+		return;
 		assert(layers.size() > 0);
 		if (layers.size() == 1) {
 			canvas_buffer = std::vector<unsigned char>(layers[0].get_data());
@@ -78,12 +77,11 @@ namespace Im_Painter
 				final_a = front_a + final_a * (1.0 - front_a);
 			}
 
-			canvas_buffer[i] = static_cast<unsigned char>(final_r * 255);
-			canvas_buffer[i + 1] = static_cast<unsigned char>(final_g * 255);
-			canvas_buffer[i + 2] = static_cast<unsigned char>(final_b * 255);
-			canvas_buffer[i + 3] = static_cast<unsigned char>(final_a * 255);
+			canvas_buffer[i] = static_cast<unsigned char>(final_r * 255.0f);
+			canvas_buffer[i + 1] = static_cast<unsigned char>(final_g * 255.0f);
+			canvas_buffer[i + 2] = static_cast<unsigned char>(final_b * 255.0f);
+			canvas_buffer[i + 3] = static_cast<unsigned char>(final_a * 255.0f);
 		}
-		texture->update(1, &canvas_buffer[0]);
 	}
 
 
@@ -135,13 +133,14 @@ namespace Im_Painter
 
 	void Canvas::new_layer() {
 		layers.push_back(Layer(height, width));
+		// update_texture();
 	}
 
 
 	void Canvas::new_layer(unsigned char *data) {
 		// layers.push_back(Layer(data, height, width));
 		layers.push_back(Layer(data, height, width));
-		update_texture();
+		// update_texture();
 	}
 
 
@@ -159,8 +158,9 @@ namespace Im_Painter
 	}
 
 
-	void Canvas::bind() {
-		texture->bind();
+	void Canvas::bind(unsigned int layer_index) {
+		assert(layer_index < layers.size());
+		layers[layer_index].bind();
 	}
 
 

@@ -114,9 +114,11 @@ namespace Im_Painter {
 		// shader.set_int("u_sprite", GL_TEXTURE0);
 
 		glActiveTexture(GL_TEXTURE0);
-		canvas.bind();
 
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		for (unsigned int i = 0; i < canvas.get_num_layers(); i++) {
+			canvas.bind(i);
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+		}
 		glBindVertexArray(0);
 		glActiveTexture(0);  // TODO: uhhhhhhh idk, texture0 is on by default, this may literally just do nothing.
 		glUseProgram(0);
