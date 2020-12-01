@@ -91,7 +91,7 @@ namespace Im_Painter {
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glBindVertexArray(0);
-		glActiveTexture(0);  // TODO: uhhhhhhh idk, texture0 is on by default, this may literally just do nothing.
+		glActiveTexture(0);
 		glUseProgram(0);
 	}
 
@@ -106,7 +106,7 @@ namespace Im_Painter {
 		glm::mat4 projection = glm::ortho(0.0f, 600.0f, 800.0f, 0.0f, -1.0f, 1.0f);
 		shader.set_mat4("u_projection", projection);
 
-		shader.set_int("u_num_layers", canvas.get_num_layers());
+		// shader.set_int("u_num_layers", canvas.get_num_layers());
 
 		assert(this->VAO != 0 && "VAO == 0 when trying to draw sprite");
 		glBindVertexArray(this->VAO);
@@ -120,7 +120,7 @@ namespace Im_Painter {
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		}
 		glBindVertexArray(0);
-		glActiveTexture(0);  // TODO: uhhhhhhh idk, texture0 is on by default, this may literally just do nothing.
+		glActiveTexture(0);
 		glUseProgram(0);
 	}
 }

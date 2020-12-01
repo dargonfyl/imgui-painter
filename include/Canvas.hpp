@@ -11,16 +11,16 @@
 
 namespace Im_Painter
 {
-	typedef unsigned int canvas_size_t;       // For canvas height/widht
-	typedef unsigned int canvas_num_layers_t; // For number of layers in canvas
-	typedef unsigned int active_layer_t;      // TODO
+	typedef unsigned int canvas_size_t;        // For canvas height/widht
+	typedef unsigned int canvas_num_layers_t;  // For number of layers in canvas
+	typedef unsigned int active_layer_index_t; // Index into the layers. Should be changed to a pointer.
 
 	class Canvas {
 		private:
 		canvas_size_t height, width;
 
-		std::vector<Layer> layers;  // Bottom layers are at the start of the list
-		std::vector<unsigned char> canvas_buffer;  // must have dimensions of the canvas
+		std::vector<Layer *> layers;              // Bottom layers are at the start of the list
+		std::vector<unsigned char> active_layer;  // TODO
 
 		Brush brush;
 
@@ -48,10 +48,10 @@ namespace Im_Painter
 		/**
 		 * Creates an array texture for GL to render.
 		 */
-		Texture to_texture(); // TODO: this might be very slow as # layers increases... how can we fix that?
+		Texture to_texture();
 
 
-		unsigned char *get_write_data();  // TODO: this function is rather silly and very unsafe. Needs rethinking.
+		unsigned char *get_write_data();
 
 
 		/**

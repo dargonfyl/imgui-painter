@@ -30,19 +30,30 @@ namespace Im_Painter
 		this->image_format = image_format == RGB ? GL_RGB : GL_RGBA;
 
 		// Texture 3D
-		glBindTexture(GL_TEXTURE_2D_ARRAY, this->id);
+		// glBindTexture(GL_TEXTURE_2D_ARRAY, this->id);
 
-		glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, this->internal_format, width, height, layer_count, 0, this->image_format, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+		// glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, this->internal_format, width, height, layer_count, 0, this->image_format, GL_UNSIGNED_BYTE, data);
+		// glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);  // TODO: this stuff
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_LEVEL, 4);
+		// glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_REPEAT);
+		// glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		// glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+		// glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+		// glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_LEVEL, 4);
 
-		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
-		// delete[] data;
+		// glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+
+		// Texture 2D
+		glBindTexture(GL_TEXTURE_2D, this->id);
+		glTexImage2D(GL_TEXTURE_2D, 0, this->internal_format, width, height, 0, this->image_format, GL_UNSIGNED_BYTE, data);
+		// TODO: we may need set texture parameters
+		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 
@@ -55,17 +66,21 @@ namespace Im_Painter
 		assert(id != 0 && "Im_Painter::Texture::update: id is 0");
 		assert(data && "Data does not exist");
 
-		glBindTexture(GL_TEXTURE_2D_ARRAY, id);
-		glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, internal_format, width, height, layer_count, 0, image_format, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);  // TODO: this stuff
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_LEVEL, 4);
+		// glBindTexture(GL_TEXTURE_2D_ARRAY, id);
+		// glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, internal_format, width, height, layer_count, 0, image_format, GL_UNSIGNED_BYTE, data);
+		// glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+		// glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_REPEAT);
+		// glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		// glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+		// glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+		// glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAX_LEVEL, 4);
 
-		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
-		// delete[] data;
+		// glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+
+		// Texture 2D
+		glBindTexture(GL_TEXTURE_2D, this->id);
+		glTexImage2D(GL_TEXTURE_2D, 0, this->internal_format, width, height, 0, this->image_format, GL_UNSIGNED_BYTE, data);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 
@@ -75,12 +90,12 @@ namespace Im_Painter
 
 
 	void Texture::bind() {
-		glBindTexture(GL_TEXTURE_2D_ARRAY, this->id);
+		glBindTexture(GL_TEXTURE_2D, this->id);
 	}
 
 
 	void Texture::unbind() {
-		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 } // namespace Im_Painter
 

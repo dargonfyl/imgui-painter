@@ -15,7 +15,7 @@ namespace Im_Painter {
 	 */
 	class Layer {
 		private:
-		std::vector<unsigned char> data;
+		// std::vector<unsigned char> data;
 		Texture *texture;
 
 
@@ -38,7 +38,7 @@ namespace Im_Painter {
 		/**
 		 * Merges a layer into this layer. This calling layer is on top.
 		 */
-		void merge(Layer to_merge);
+		void merge(Layer &to_merge);
 
 
 		std::vector<unsigned char> &get_data();

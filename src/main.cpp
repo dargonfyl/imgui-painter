@@ -92,7 +92,7 @@ GLFWwindow *init_window() {
 	// GL config; these don't change much
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 	glEnable(GL_BLEND);  // Blend for alpha things
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  // TODO: alpha composite blending
 
 	return window;
 }
@@ -157,7 +157,7 @@ int main() {
 
 	// Compile shaders & link
 	// Im_Painter::Shader *shader = new Im_Painter::Shader("../shaders/triangle.vs", "../shaders/triangle.fs");
-	Im_Painter::Shader shader = Im_Painter::Shader("/Users/dennis/dev/imgui-painter/shaders/quad.vs", "/Users/dennis/dev/imgui-painter/shaders/quad_array.fs");
+	Im_Painter::Shader shader = Im_Painter::Shader("/Users/dennis/dev/imgui-painter/shaders/quad.vs", "/Users/dennis/dev/imgui-painter/shaders/quad_single.fs");
 
 	Im_Painter::Canvas canvas = Im_Painter::Image_IO::canvas_from_image("/Users/dennis/dev/imgui-painter/data/canvas.jpg");
 
@@ -228,7 +228,7 @@ int main() {
 		if (show_layers_window) {
 			ImGui::Begin("Layers", &show_layers_window);
 
-			// TODO: All the layers
+			// TODO: layer UI
 			if (ImGui::Button("New layer")) {
 				canvas.new_layer();
 			}
