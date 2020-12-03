@@ -6,7 +6,8 @@ uniform sampler2D u_sprite;
 
 out vec4 colour;
 
-// NOTE: that blending must be handled by GL via the buffers
+// NOTE: blending functions handled by GL. We need to premultiply the colours, though.
 void main() {
 	colour = texture(u_sprite, tex_coord);
+	colour.xyz *= colour.w;  // Premultiply
 }
