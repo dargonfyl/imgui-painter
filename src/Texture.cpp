@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 #include <assert.h>
-
+#include <iostream>
 
 namespace Im_Painter
 {
@@ -29,6 +29,8 @@ namespace Im_Painter
 		this->internal_format = internal_format == RGB ? GL_RGB : GL_RGBA;
 		this->image_format = image_format == RGB ? GL_RGB : GL_RGBA;
 
+		assert(this->internal_format == GL_RGB || this->internal_format == GL_RGBA);
+		assert(this->image_format == GL_RGB || this->image_format == GL_RGBA);
 		// Texture 3D
 		// glBindTexture(GL_TEXTURE_2D_ARRAY, this->id);
 
@@ -47,10 +49,10 @@ namespace Im_Painter
 		glBindTexture(GL_TEXTURE_2D, this->id);
 		glTexImage2D(GL_TEXTURE_2D, 0, this->internal_format, width, height, 0, this->image_format, GL_UNSIGNED_BYTE, data);
 		// TODO: we may need set texture parameters
-		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);

@@ -9,20 +9,15 @@ namespace Im_Painter {
 	class Renderer {
 		private:
 		Shader shader;
-		unsigned int VAO, VBO;
+		unsigned int VAO, VBO, FBO, RBO;
+		unsigned int texture_colour_buffer;
 
 
 		public:
 		Renderer(Shader &shader);
 
 
-		Renderer();
-
-
 		~Renderer();
-
-
-		void render();
 
 
 		void render(Texture &texture, unsigned int num_layers);

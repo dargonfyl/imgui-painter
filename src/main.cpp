@@ -91,9 +91,10 @@ GLFWwindow *init_window() {
 
 	// GL config; these don't change much
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-	glEnable(GL_BLEND);  // Blend for alpha things
-	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  // TODO: alpha composite blending
-	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);  // TODO: you may need to use premultiplied alpha
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendEquation(GL_FUNC_ADD);
 
 	return window;
 }
