@@ -20,7 +20,9 @@ namespace Im_Painter
 		canvas_size_t height, width;
 
 		std::vector<Layer *> layers;              // Bottom layers are at the start of the list
-		std::vector<unsigned char> active_layer;  // TODO
+		std::vector<unsigned char> active_layer_buffer;  // TODO
+		active_layer_index_t active_layer_index;
+		bool dirty;
 
 		Brush brush;
 
@@ -80,6 +82,9 @@ namespace Im_Painter
 		 * @param data Image data. Must be 4 * height * width bytes in size.
 		 */
 		void new_layer(unsigned char *data);
+
+
+		void update_canvas();
 
 
 		void paint(int x_mouse_pos, int y_mouse_pos);

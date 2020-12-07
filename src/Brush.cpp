@@ -32,10 +32,10 @@ namespace Im_Painter {
 		assert(0.0 <= color.y && color.y <= 1.0);
 		assert(0.0 <= color.z && color.z <= 1.0);
 		assert(0.0 <= color.w && color.w <= 1.0);
-		R = static_cast<unsigned char>(color.x * 255);
-		G = static_cast<unsigned char>(color.y * 255);
-		B = static_cast<unsigned char>(color.z * 255);
-		A = static_cast<unsigned char>(color.w * 255);
+		R = static_cast<unsigned char>(color.x * 255.0f);
+		G = static_cast<unsigned char>(color.y * 255.0f);
+		B = static_cast<unsigned char>(color.z * 255.0f);
+		A = static_cast<unsigned char>(color.w * 255.0f);
 	}
 
 

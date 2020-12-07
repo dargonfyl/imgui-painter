@@ -13,13 +13,16 @@ namespace Im_Painter
 
 
 	}
-	
-	
+
+
 	Canvas::Canvas(canvas_size_t height, canvas_size_t width) {
 		assert(height > 0 && width > 0);
 		this->height = height;
 		this->width = width;
 
+		active_layer_index = 0;
+		active_layer_buffer = std::vector<unsigned char>(4 * height * width, static_cast<unsigned char>(0));
+		dirty = false;
 		layers.push_back(new Layer(height, width));
 	}
 
@@ -29,11 +32,17 @@ namespace Im_Painter
 		this->height = height;
 		this->width = width;
 
+		active_layer_index = 0;
+		active_layer_buffer = std::vector<unsigned char>(data, data + 4 * height * width);
+		dirty = false;
 		layers.push_back(new Layer(data, height, width));
 	}
 
 
 	Canvas::~Canvas() {
+		for (Layer *layer : layers) {
+			delete layer;
+		}
 	}
 
 
@@ -139,12 +148,26 @@ namespace Im_Painter
 	}
 
 
+	void Canvas::update_canvas() {
+		if (!dirty) return;
+
+		assert(active_layer_index < layers.size());
+		Layer *layer = layers[active_layer_index];
+
+		layer->update(&active_layer_buffer[0]);
+
+
+		dirty = false;
+	}
+
+
 	void Canvas::paint(int x_mouse_pos, int y_mouse_pos) {
-		// if (x_mouse_pos >= width || x_mouse_pos < 0) return;
-		// if (y_mouse_pos >= height || y_mouse_pos < 0) return;
-		// int pos = 4 * (y_mouse_pos * width + x_mouse_pos);
-		// unsigned char *layer_location = &layers[0]->get_data()[pos];
-		// brush.use(layer_location);
+		if (x_mouse_pos >= width || x_mouse_pos < 0) return;
+		if (y_mouse_pos >= height || y_mouse_pos < 0) return;
+		int pos = 4 * (y_mouse_pos * width + x_mouse_pos);
+		unsigned char *layer_location = &active_layer_buffer[pos];
+		brush.use(layer_location);
+		dirty = true;
 	}
 	
 

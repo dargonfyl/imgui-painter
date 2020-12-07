@@ -40,6 +40,12 @@ namespace Im_Painter {
 		void merge(Layer &to_merge);
 
 
+		/**
+		 * Update the layer's data.
+		 */
+		void update(unsigned char *data);
+
+
 		void bind();
 	};
 

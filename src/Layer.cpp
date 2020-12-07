@@ -30,6 +30,11 @@ namespace Im_Painter {
 	}
 
 
+	void Layer::update(unsigned char *data) {
+		texture->update(1, data);
+	}
+
+
 	void Layer::bind() {
 		texture->bind();
 	}
