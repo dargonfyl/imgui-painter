@@ -36,6 +36,6 @@ namespace Im_Painter
 		/**
 		 * Not implemented lol.
 		 */
-		void write(std::string path);
+		void write(std::string path, Canvas &canvas);
 	};
 } // namespace Im_Painter
