@@ -8,7 +8,7 @@
 
 
 // TODO: define max dimensions for Canvas
-
+// TODO: iterator for layers
 namespace Im_Painter
 {
 	typedef unsigned int canvas_size_t;        // For canvas height/widht
@@ -94,6 +94,9 @@ namespace Im_Painter
 
 
 		void bind(unsigned int layer_index);
+
+
+		Texture_id_t layer_texture_id(unsigned int layer_index);
 
 
 		canvas_size_t get_height();

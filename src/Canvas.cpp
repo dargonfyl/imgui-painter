@@ -182,6 +182,12 @@ namespace Im_Painter
 	}
 
 
+	Texture_id_t Canvas::layer_texture_id(unsigned int layer_index) {
+		assert(layer_index < layers.size());
+		return layers[layer_index]->get_texture_id();
+	}
+
+
 	canvas_size_t Canvas::get_height() {
 		return this->height;
 	}

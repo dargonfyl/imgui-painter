@@ -15,6 +15,8 @@ namespace Im_Painter {
 	 */
 	class Layer {
 		private:
+		bool visible;
+
 		Texture *texture;
 
 
@@ -44,6 +46,12 @@ namespace Im_Painter {
 		 * Update the layer's data.
 		 */
 		void update(unsigned char *data);
+
+
+		/**
+		 * Gets texture id associated with this layer.
+		 */
+		Texture_id_t get_texture_id();
 
 
 		void bind();

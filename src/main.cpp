@@ -229,14 +229,7 @@ int main() {
 		}
 
 		if (show_layers_window) {
-			ImGui::Begin("Layers", &show_layers_window);
-
-			// TODO: layer UI
-			if (ImGui::Button("New layer")) {
-				canvas.new_layer();
-			}
-
-			ImGui::End();
+			Im_Painter::UI::show_layers_window(canvas, show_layers_window);
 		}
 
 		ImGui::Render();
