@@ -43,6 +43,15 @@ namespace Im_Painter {
 	}
 
 
+	void Layer::get_data(std::vector<unsigned char> &buffer) {
+		unsigned char *data = texture->get_texture_data();
+		int size = buffer.size();
+		buffer.clear();
+		buffer = std::vector<unsigned char>(data, data + size);
+		delete data;
+	}
+
+
 	void Layer::bind() {
 		texture->bind();
 	}

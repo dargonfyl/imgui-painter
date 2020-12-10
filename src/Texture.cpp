@@ -99,5 +99,15 @@ namespace Im_Painter
 	void Texture::unbind() {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
+
+
+	unsigned char *Texture::get_texture_data() {
+		int num_channels = internal_format == GL_RGBA ? 4 : 3;
+		unsigned char *data = (unsigned char *)malloc(sizeof(unsigned char) * width * height * num_channels);
+		glBindTexture(GL_TEXTURE_2D, this->id);
+		glGetTexImage(GL_TEXTURE_2D, 0, internal_format, GL_UNSIGNED_BYTE, (void *)data);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		return data;
+	}
 } // namespace Im_Painter
 

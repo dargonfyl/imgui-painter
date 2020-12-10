@@ -54,6 +54,9 @@ namespace Im_Painter {
 		Texture_id_t get_texture_id();
 
 
+		void get_data(std::vector<unsigned char> &buffer);
+
+
 		void bind();
 	};
 

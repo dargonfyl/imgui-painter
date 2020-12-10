@@ -96,6 +96,9 @@ namespace Im_Painter
 		void bind(unsigned int layer_index);
 
 
+		void switch_active_layer(active_layer_index_t layer_index);
+
+
 		Texture_id_t layer_texture_id(unsigned int layer_index);
 
 

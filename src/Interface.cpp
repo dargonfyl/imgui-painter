@@ -14,7 +14,7 @@ namespace Im_Painter {
 			canvas.new_layer();
 		}
 
-		static unsigned int selected = -1;
+		static int selected = -1;
 		ImVec2 size = ImGui::GetWindowSize();
 
 		for (unsigned int i = 0; i < canvas.get_num_layers(); i++) {
@@ -29,6 +29,8 @@ namespace Im_Painter {
 			ImGui::SameLine();
 			ImGui::Text("Layer %d", i);
 		}
+		if (selected >= 0)
+			canvas.switch_active_layer(static_cast<unsigned int>(selected));
 
 		ImGui::End();
 	}

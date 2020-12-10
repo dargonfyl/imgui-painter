@@ -182,6 +182,14 @@ namespace Im_Painter
 	}
 
 
+	void Canvas::switch_active_layer(active_layer_index_t layer_index) {
+		if (layer_index == active_layer_index) return;
+		assert(layer_index < layers.size());
+		active_layer_index = layer_index;
+		layers[active_layer_index]->get_data(active_layer_buffer);
+	}
+
+
 	Texture_id_t Canvas::layer_texture_id(unsigned int layer_index) {
 		assert(layer_index < layers.size());
 		return layers[layer_index]->get_texture_id();
