@@ -11,7 +11,7 @@
 // TODO: iterator for layers
 namespace Im_Painter
 {
-	typedef unsigned int canvas_size_t;        // For canvas height/widht
+	typedef int canvas_size_t;        // For canvas height/widht
 	typedef unsigned int canvas_num_layers_t;  // For number of layers in canvas
 	typedef unsigned int active_layer_index_t; // Index into the layers. Should be changed to a pointer.
 
@@ -20,11 +20,10 @@ namespace Im_Painter
 		canvas_size_t height, width;
 
 		std::vector<Layer *> layers;              // Bottom layers are at the start of the list
-		std::vector<unsigned char> active_layer_buffer;  // TODO
+		std::vector<unsigned char> active_layer_buffer;
 		active_layer_index_t active_layer_index;
 		bool dirty;
 
-		Brush brush;
 
 		void update_texture();
 
@@ -87,10 +86,7 @@ namespace Im_Painter
 		void update_canvas();
 
 
-		void paint(int x_mouse_pos, int y_mouse_pos);
-
-
-		void set_brush_color(glm::vec4 color);
+		void paint(Brush &brush, int x_mouse_pos, int y_mouse_pos);
 
 
 		void bind(unsigned int layer_index);

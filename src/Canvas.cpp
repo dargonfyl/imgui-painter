@@ -161,18 +161,15 @@ namespace Im_Painter
 	}
 
 
-	void Canvas::paint(int x_mouse_pos, int y_mouse_pos) {
+	void Canvas::paint(Brush &brush, int x_mouse_pos, int y_mouse_pos) {
 		if (x_mouse_pos >= width || x_mouse_pos < 0) return;
 		if (y_mouse_pos >= height || y_mouse_pos < 0) return;
+
 		int pos = 4 * (y_mouse_pos * width + x_mouse_pos);
 		unsigned char *layer_location = &active_layer_buffer[pos];
-		brush.use(layer_location);
-		dirty = true;
-	}
-	
 
-	void Canvas::set_brush_color(glm::vec4 color) {
-		brush.set_color(color);
+		brush.use(active_layer_buffer, x_mouse_pos, y_mouse_pos, width, height);
+		dirty = true;
 	}
 
 

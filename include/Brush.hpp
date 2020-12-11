@@ -1,11 +1,12 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <vector>
 
 
 namespace Im_Painter
 {
-	typedef unsigned int Brush_size_t;
+	typedef int Brush_size_t;
 	
 	/**
 	 * Brush class. Holds brush parameters, colors, and other data.
@@ -52,5 +53,8 @@ namespace Im_Painter
 		 * Colours a single pixel.
 		 */
 		void use(unsigned char *pixel);
+
+
+		void use(std::vector<unsigned char> &buffer, int x, int y, int width, int height);
 	};
 } // namespace Im_Painter

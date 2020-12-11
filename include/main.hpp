@@ -17,3 +17,4 @@
 #include "Renderer.hpp"
 #include "Image_IO.hpp"
 #include "Interface.hpp"
+#include "Brush.hpp"

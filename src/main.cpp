@@ -175,16 +175,18 @@ int main() {
 	bool show_another_window = false;
 	bool show_layers_window = true;
 
+	Im_Painter::Brush brush = Im_Painter::Brush(10);
+
 	while (!glfwWindowShouldClose(window)) {
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glfwPollEvents();
 		if (click) {
-			canvas.paint(x_mouse_position, y_mouse_position);
+			canvas.paint(brush, x_mouse_position, y_mouse_position);
 		}
 
-		canvas.set_brush_color(glm::vec4(clear_color.x, clear_color.y, clear_color.z, clear_color.w));
+		brush.set_color(glm::vec4(clear_color.x, clear_color.y, clear_color.z, clear_color.w));
 
 		canvas.update_canvas();
 		renderer->render(canvas);

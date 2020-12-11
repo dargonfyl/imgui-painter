@@ -1,6 +1,7 @@
 #include "Brush.hpp"
 
 #include <assert.h>
+// #include <algorithm>  // UHHHHH
 
 
 namespace Im_Painter {
@@ -47,11 +48,18 @@ namespace Im_Painter {
 	}
 
 
-	void Brush::use(unsigned char *pixel) {
-		assert(pixel);
-		*pixel = R;
-		*(pixel + 1) = G;
-		*(pixel + 2) = B;
-		*(pixel + 3) = A;
+	void Brush::use(std::vector<unsigned char> &buffer, int x, int y, int width, int height) {
+		assert(buffer.size() == 4 * width * height);
+
+		// Square brush for now
+		for (int i = std::max(0, x - size); i < std::min(width, x + size); i++) {
+			for (int j = std::max(0, y - size); j < std::min(height, y + size); j++) {
+				int pos = 4 * (j * width + i);
+				buffer[pos] = R;
+				buffer[pos + 1] = G;
+				buffer[pos + 2] = B;
+				buffer[pos + 3] = A;
+			}
+		}
 	}
 }  // namespace Im_Painter
