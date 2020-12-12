@@ -38,6 +38,9 @@ namespace Im_Painter
 		void set_color(glm::vec4 color);
 
 
+		glm::vec4 get_color();
+
+
 		/**
 		 * Sets color using unsigned chars;
 		 * 

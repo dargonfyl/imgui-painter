@@ -17,5 +17,9 @@ namespace Im_Painter
 		 * 
 		 */
 		void show_layers_window(Canvas &canvas, bool &show);
+
+
+		void colours(Brush &brush);
+
 	} // namespace UI
 } // namespace Im_Painter

@@ -48,6 +48,16 @@ namespace Im_Painter {
 	}
 
 
+	glm::vec4 Brush::get_color() {
+		float r = static_cast<float>(R) / 255.0f;
+		float g = static_cast<float>(G) / 255.0f;
+		float b = static_cast<float>(B) / 255.0f;
+		float a = static_cast<float>(A) / 255.0f;
+
+		return glm::vec4(r, g, b, a);
+	}
+
+
 	void Brush::use(std::vector<unsigned char> &buffer, int x, int y, int width, int height) {
 		assert(buffer.size() == 4 * width * height);
 

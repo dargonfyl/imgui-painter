@@ -113,6 +113,9 @@ void init_imgui(GLFWwindow *window) {
 	ImGui::StyleColorsClassic();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330 core");
+
+	// TODO: stuff here for customizability
+	ImGui::SetColorEditOptions(ImGuiColorEditFlags_Float | ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_PickerHueWheel);
 }
 
 
@@ -186,7 +189,7 @@ int main() {
 			canvas.paint(brush, x_mouse_position, y_mouse_position);
 		}
 
-		brush.set_color(glm::vec4(clear_color.x, clear_color.y, clear_color.z, clear_color.w));
+		// brush.set_color(glm::vec4(clear_color.x, clear_color.y, clear_color.z, clear_color.w));
 
 		canvas.update_canvas();
 		renderer->render(canvas);
@@ -221,6 +224,8 @@ int main() {
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
 		}
+
+		Im_Painter::UI::colours(brush);
 
 		if (show_another_window) {
 			ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
