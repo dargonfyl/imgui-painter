@@ -32,8 +32,7 @@ namespace Im_Painter {
 					color_primary = col;
 				}
 				if (ImGui::BeginPopupContextItem()) {
-
-					if (ImGui::MenuItem("Set", "S")) {
+					if (ImGui::MenuItem("Set", "S")) { // TODO: press s to set color
 						glm::vec4 bc = brush.get_color();
 						ImVec4 im_brush_col = ImVec4(bc.x, bc.y, bc.z, 1.0f);
 						swatch[i] = im_brush_col;
