@@ -180,9 +180,9 @@ namespace Im_Painter
 
 
 	void Canvas::switch_active_layer(layer_index_t layer_index) {
+		assert(layer_index < layers.size());
 		if (layer_index == active_layer_index) return;
-		if (layer_index >= layers.size()) return;
-		// assert(layer_index < layers.size());
+		// if (layer_index >= layers.size()) return;
 
 		active_layer_index = layer_index;
 		layers[active_layer_index]->get_data(active_layer_buffer);
@@ -214,6 +214,18 @@ namespace Im_Painter
 		layers.erase(layers.begin() + layer_index);
 
 		layers[active_layer_index]->get_data(active_layer_buffer);
+	}
+
+
+	void Canvas::toggle_layer_visibility(layer_index_t layer_index) {
+		assert(layer_index < layers.size());
+		layers[layer_index]->toggle_visible();
+	}
+
+
+	bool Canvas::get_layer_visibility(layer_index_t layer_index) {
+		assert(layer_index < layers.size());
+		return layers[layer_index]->is_visible();
 	}
 
 

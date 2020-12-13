@@ -188,10 +188,9 @@ int main() {
 			canvas.paint(brush, x_mouse_position, y_mouse_position);
 		}
 
-		// brush.set_color(glm::vec4(clear_color.x, clear_color.y, clear_color.z, clear_color.w));
-
 		canvas.update_canvas();
 		renderer->render(canvas);
+
 		// Im_Painter::Texture tex = canvas.to_texture();
 		// renderer->render(tex, canvas.get_num_layers());
 

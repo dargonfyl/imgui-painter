@@ -60,8 +60,10 @@ namespace Im_Painter {
 			if (ImGui::BeginPopupContextItem()) {
 				ImGui::Text("Layer things");
 
-				// bool visible;  // TODO
-				ImGui::MenuItem("Not implemented", "", true);
+				bool visible = canvas.get_layer_visibility(index);  // TODO
+				if (ImGui::MenuItem("Visible", "", &visible)) {
+					canvas.toggle_layer_visibility(index);
+				}
 				if (ImGui::MenuItem("Delete", "", false, canvas.get_num_layers() != 1)) {
 					canvas.delete_layer(index);
 				}

@@ -128,6 +128,8 @@ namespace Im_Painter {
 		unsigned int i;
 		float model_offset = 0.0f;
 		for (i = 0; i < canvas.get_num_layers(); i++) {
+			if (!canvas.get_layer_visibility(i)) continue;
+
 			canvas.bind(i);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		}

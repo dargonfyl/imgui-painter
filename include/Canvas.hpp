@@ -11,9 +11,9 @@
 // TODO: iterator for layers
 namespace Im_Painter
 {
-	typedef int canvas_size_t;        // For canvas height/widht
+	typedef int canvas_size_t;                 // For canvas height/widht
 	typedef unsigned int canvas_num_layers_t;  // For number of layers in canvas
-	typedef unsigned int layer_index_t; // Index into the layers. Should be changed to a pointer.
+	typedef unsigned int layer_index_t;        // Index into the layers. Should be changed to a pointer.
 
 	class Canvas {
 		private:
@@ -99,6 +99,12 @@ namespace Im_Painter
 
 
 		void delete_layer(layer_index_t layer_index);
+
+
+		void toggle_layer_visibility(layer_index_t layer_index);
+
+
+		bool get_layer_visibility(layer_index_t layer_index);
 
 
 		canvas_size_t get_height();
