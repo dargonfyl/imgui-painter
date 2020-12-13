@@ -55,4 +55,14 @@ namespace Im_Painter {
 	void Layer::bind() {
 		texture->bind();
 	}
+
+
+	bool Layer::is_visible() {
+		return visible;
+	}
+
+
+	void Layer::toggle_visible() {
+		visible = !visible;
+	}
 } // namespace Im_Painter

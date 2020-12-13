@@ -13,7 +13,7 @@ namespace Im_Painter
 {
 	typedef int canvas_size_t;        // For canvas height/widht
 	typedef unsigned int canvas_num_layers_t;  // For number of layers in canvas
-	typedef unsigned int active_layer_index_t; // Index into the layers. Should be changed to a pointer.
+	typedef unsigned int layer_index_t; // Index into the layers. Should be changed to a pointer.
 
 	class Canvas {
 		private:
@@ -21,7 +21,7 @@ namespace Im_Painter
 
 		std::vector<Layer *> layers;              // Bottom layers are at the start of the list
 		std::vector<unsigned char> active_layer_buffer;
-		active_layer_index_t active_layer_index;
+		layer_index_t active_layer_index;
 		bool dirty;
 
 
@@ -92,10 +92,13 @@ namespace Im_Painter
 		void bind(unsigned int layer_index);
 
 
-		void switch_active_layer(active_layer_index_t layer_index);
+		void switch_active_layer(layer_index_t layer_index);
 
 
-		Texture_id_t layer_texture_id(unsigned int layer_index);
+		Texture_id_t layer_texture_id(layer_index_t layer_index);
+
+
+		void delete_layer(layer_index_t layer_index);
 
 
 		canvas_size_t get_height();

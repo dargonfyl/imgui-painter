@@ -179,17 +179,41 @@ namespace Im_Painter
 	}
 
 
-	void Canvas::switch_active_layer(active_layer_index_t layer_index) {
+	void Canvas::switch_active_layer(layer_index_t layer_index) {
 		if (layer_index == active_layer_index) return;
-		assert(layer_index < layers.size());
+		if (layer_index >= layers.size()) return;
+		// assert(layer_index < layers.size());
+
 		active_layer_index = layer_index;
 		layers[active_layer_index]->get_data(active_layer_buffer);
 	}
 
 
-	Texture_id_t Canvas::layer_texture_id(unsigned int layer_index) {
-		assert(layer_index < layers.size());
+	Texture_id_t Canvas::layer_texture_id(layer_index_t layer_index) {
+		// assert(layer_index < layers.size());
+		if (layer_index >= layers.size()) {
+			return 0;
+		}
 		return layers[layer_index]->get_texture_id();
+	}
+
+
+	void Canvas::delete_layer(layer_index_t layer_index) {
+		assert(layer_index < layers.size());
+
+		// Must have at least 1 layer.
+		if (layers.size() == 1) return;
+
+		if (layer_index < active_layer_index) {
+			active_layer_index -= 1;
+		} else if (active_layer_index == layer_index) {
+			if (active_layer_index == layers.size() - 1) {
+				active_layer_index -= 1;
+			}
+		}
+		layers.erase(layers.begin() + layer_index);
+
+		layers[active_layer_index]->get_data(active_layer_buffer);
 	}
 
 

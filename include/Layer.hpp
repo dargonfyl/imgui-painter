@@ -58,6 +58,12 @@ namespace Im_Painter {
 
 
 		void bind();
+
+
+		bool is_visible();
+
+
+		void toggle_visible();
 	};
 
 } // namespace Im_Painter
