@@ -206,7 +206,7 @@ int main() {
 		if (show_demo_window)
 			ImGui::ShowDemoWindow(&show_demo_window);
 		
-		Im_Painter::UI::colours(brush);
+		Im_Painter::UI::show_colours_window(brush);
 
 		if (show_layers_window) {
 			Im_Painter::UI::show_layers_window(canvas, show_layers_window);

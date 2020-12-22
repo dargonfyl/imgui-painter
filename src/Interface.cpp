@@ -70,7 +70,7 @@ namespace Im_Painter {
 			if (ImGui::BeginPopupContextItem()) {
 				ImGui::Text("Layer things");
 
-				bool visible = canvas.get_layer_visibility(index);  // TODO
+				bool visible = canvas.get_layer_visibility(index);
 				if (ImGui::MenuItem("Visible", "", &visible)) {
 					canvas.toggle_layer_visibility(index);
 				}
@@ -89,55 +89,54 @@ namespace Im_Painter {
 		}
 	}
 
-	namespace UI {
-		void handle_keyboard(int key) {
 
+	void UI::handle_keyboard(int key) {
+
+	}
+
+
+	void UI::show_layers_window(Canvas &canvas, bool &show) {
+		ImGui::Begin("Layers", &show);
+
+		// TODO: layer UI
+		if (ImGui::Button("New layer")) {
+			canvas.new_layer();
 		}
 
+		static int selected = -1;
+		ImVec2 size = ImGui::GetWindowSize();
 
-		void show_layers_window(Canvas &canvas, bool &show) {
-			ImGui::Begin("Layers", &show);
+		for (unsigned int i = 0; i < canvas.get_num_layers(); i++) {
+			std::string imgui_layer_id = "##" + std::to_string(i);
 
-			// TODO: layer UI
-			if (ImGui::Button("New layer")) {
-				canvas.new_layer();
+			// std::string name = "layer" + imgui_layer_id;
+			std::string name = imgui_layer_id;
+			if (ImGui::Selectable(name.c_str(), selected == i, 0, ImVec2(size.x, 30))) {
+				selected = i;
 			}
+			std::string options = "options" + imgui_layer_id;
+			layer_options(canvas, i);
 
-			static int selected = -1;
-			ImVec2 size = ImGui::GetWindowSize();
+			ImGui::SameLine(LAYER_SAMELINE_EPSILON);
 
-			for (unsigned int i = 0; i < canvas.get_num_layers(); i++) {
-				std::string imgui_layer_id = "##" + std::to_string(i);
+			ImGui::Image((void*)(intptr_t)canvas.layer_texture_id(i), ImVec2(40, 30));
 
-				// std::string name = "layer" + imgui_layer_id;
-				std::string name = imgui_layer_id;
-				if (ImGui::Selectable(name.c_str(), selected == i, 0, ImVec2(size.x, 30))) {
-					selected = i;
-				}
-				std::string options = "options" + imgui_layer_id;
-				layer_options(canvas, i);
-
-				ImGui::SameLine(LAYER_SAMELINE_EPSILON);
-
-				ImGui::Image((void*)(intptr_t)canvas.layer_texture_id(i), ImVec2(40, 30));
-
-				ImGui::SameLine();
-				ImGui::Text("Layer %d", i);
-			}
-			if (selected >= 0)
-				canvas.switch_active_layer(static_cast<unsigned int>(selected));
-
-			ImGui::End();
+			ImGui::SameLine();
+			ImGui::Text("Layer %d", i);
 		}
+		if (selected >= 0)
+			canvas.switch_active_layer(static_cast<unsigned int>(selected));
+
+		ImGui::End();
+	}
 
 
-		void show_colours_window(Brush &brush) {
-			ImGui::Begin("Colour Picker");
+	void UI::show_colours_window(Brush &brush) {
+		ImGui::Begin("Colour Picker");
 
-			colour_selector(brush);
+		colour_selector(brush);
 
-			swatches(brush);
-			ImGui::End();
-		}
-	} // namespace UI
+		swatches(brush);
+		ImGui::End();
+	}
 } // namespace Im_Painter
