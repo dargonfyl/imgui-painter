@@ -23,6 +23,11 @@ namespace Im_Painter {
 	}
 
 
+	void Brush::set_size(Brush_size_t size) {
+		this->size = size;
+	}
+
+
 	Brush::~Brush() {
 
 	}

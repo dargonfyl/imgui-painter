@@ -37,5 +37,11 @@ namespace Im_Painter
 		 */
 		void show_colours_window(Brush &brush);
 
+
+		/**
+		 * Shows brush window.
+		 */
+		void show_brush_window(Brush &brush);
+
 	} // namespace UI
 } // namespace Im_Painter

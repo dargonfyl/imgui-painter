@@ -30,6 +30,9 @@ namespace Im_Painter
 		~Brush();
 
 
+		void set_size(Brush_size_t size);
+
+
 		/**
 		 * Sets color using floats in the range [0, 1].
 		 * 

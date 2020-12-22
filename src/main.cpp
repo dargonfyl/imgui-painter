@@ -212,6 +212,8 @@ int main() {
 			Im_Painter::UI::show_layers_window(canvas, show_layers_window);
 		}
 
+		Im_Painter::UI::show_brush_window(brush);
+
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

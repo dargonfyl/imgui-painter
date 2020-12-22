@@ -139,4 +139,18 @@ namespace Im_Painter {
 		swatches(brush);
 		ImGui::End();
 	}
+
+
+	void UI::show_brush_window(Brush &brush) {
+		ImGui::Begin("Brush Settings");
+
+		// TODO
+		static Brush_size_t size = 10;
+		ImGui::SliderInt("Size", &size, 1, 100);
+
+		brush.set_size(size);
+
+		ImGui::End();
+	}
+
 } // namespace Im_Painter
