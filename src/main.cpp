@@ -17,6 +17,11 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 	// Exit key
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+
+
+	if (key >= 0 && key < 1024) { // These are the standard keyboard keys
+		if (action == GLFW_RELEASE) Im_Painter::UI::handle_keyboard(key);
+	}
 }
 
 int x_mouse_position = 0;
