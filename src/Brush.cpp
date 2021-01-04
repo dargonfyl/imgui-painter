@@ -66,14 +66,33 @@ namespace Im_Painter {
 	void Brush::use(std::vector<unsigned char> &buffer, int x, int y, int width, int height) {
 		assert(buffer.size() == 4 * width * height);
 
+		unsigned char cols[] = {
+			R,
+			G,
+			B
+		};
+
 		// Square brush for now
 		for (int i = std::max(0, x - size); i < std::min(width, x + size); i++) {
 			for (int j = std::max(0, y - size); j < std::min(height, y + size); j++) {
 				int pos = 4 * (j * width + i);
-				buffer[pos] = R;
-				buffer[pos + 1] = G;
-				buffer[pos + 2] = B;
-				buffer[pos + 3] = A;
+
+				float A_alpha = A / 255.0f;
+				float B_alpha = buffer[pos + 3] / 255.0f;
+				float comp_alpha = A_alpha + B_alpha * (1.0f - A_alpha);
+				for (int k = 0; k < 3; k++) {
+					float col_a = cols[k] / 255.0f;
+					float col_b = buffer[pos + k] / 255.0f;
+					float col = (A_alpha * col_a + B_alpha * col_b * (1 - A_alpha)) / comp_alpha;
+					buffer[pos + k] = static_cast<unsigned char>(col * 255.0f);
+				}
+
+				if (comp_alpha >= A_alpha) {
+					comp_alpha *= 1.0 + A_alpha;
+					comp_alpha = std::min(1.0f, comp_alpha);
+				}
+
+				buffer[pos + 3] = static_cast<unsigned char>(comp_alpha * 255.0f);
 			}
 		}
 	}
