@@ -229,6 +229,11 @@ namespace Im_Painter
 	}
 
 
+	layer_index_t Canvas::get_active_layer_index() {
+		return this->active_layer_index;
+	}
+
+
 	canvas_size_t Canvas::get_height() {
 		return this->height;
 	}

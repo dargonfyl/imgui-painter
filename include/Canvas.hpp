@@ -107,6 +107,9 @@ namespace Im_Painter
 		bool get_layer_visibility(layer_index_t layer_index);
 
 
+		layer_index_t get_active_layer_index();
+
+
 		canvas_size_t get_height();
 
 

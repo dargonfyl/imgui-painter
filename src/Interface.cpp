@@ -98,21 +98,21 @@ namespace Im_Painter {
 	void UI::show_layers_window(Canvas &canvas, bool &show) {
 		ImGui::Begin("Layers", &show);
 
-		// TODO: layer UI
+		// TODO: layer UI drag & drop
 		if (ImGui::Button("New layer")) {
 			canvas.new_layer();
 		}
 
-		static int selected = -1;
 		ImVec2 size = ImGui::GetWindowSize();
+		unsigned int switched = canvas.get_active_layer_index();
 
 		for (unsigned int i = 0; i < canvas.get_num_layers(); i++) {
 			std::string imgui_layer_id = "##" + std::to_string(i);
 
 			// std::string name = "layer" + imgui_layer_id;
 			std::string name = imgui_layer_id;
-			if (ImGui::Selectable(name.c_str(), selected == i, 0, ImVec2(size.x, 30))) {
-				selected = i;
+			if (ImGui::Selectable(name.c_str(), i == canvas.get_active_layer_index(), 0, ImVec2(size.x, 30))) {
+				switched = i;
 			}
 			std::string options = "options" + imgui_layer_id;
 			layer_options(canvas, i);
@@ -124,8 +124,11 @@ namespace Im_Painter {
 			ImGui::SameLine();
 			ImGui::Text("Layer %d", i);
 		}
-		if (selected >= 0)
-			canvas.switch_active_layer(static_cast<unsigned int>(selected));
+
+		// HACK: this is a weird fix to ensure that the index of the active layer is not out of bounds.
+		if (canvas.get_active_layer_index() != switched && switched < canvas.get_num_layers()) {
+			canvas.switch_active_layer(switched);
+		}
 
 		ImGui::End();
 	}
