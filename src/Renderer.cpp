@@ -121,6 +121,10 @@ namespace Im_Painter {
 
 		shader.set_bool("u_premultiply", true);
 
+		shader.set_float("u_hue_shift", canvas.get_hue_shift());
+		shader.set_float("u_saturation_shift", canvas.get_saturation_shift());
+		shader.set_float("u_value_shift", canvas.get_value_shift());
+
 		assert(this->VAO != 0 && "VAO == 0 when trying to draw canvas");
 		glBindVertexArray(this->VAO);
 
@@ -130,6 +134,15 @@ namespace Im_Painter {
 		for (i = 0; i < canvas.get_num_layers(); i++) {
 			if (!canvas.get_layer_visibility(i)) continue;
 
+			if (i == canvas.get_active_layer_index()) {
+				shader.set_float("u_hue_shift", canvas.get_hue_shift());
+				shader.set_float("u_saturation_shift", canvas.get_saturation_shift());
+				shader.set_float("u_value_shift", canvas.get_value_shift());
+			} else {
+				shader.set_float("u_hue_shift", 0.0f);
+				shader.set_float("u_saturation_shift", 0.0f);
+				shader.set_float("u_value_shift", 0.0f);
+			}
 			canvas.bind(i);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		}

@@ -65,7 +65,7 @@ namespace Im_Painter {
 			}
 		}
 
-
+    
 		void layer_options(Canvas &canvas, layer_index_t index) {
 			if (ImGui::BeginPopupContextItem()) {
 				ImGui::Text("Layer things");
@@ -155,5 +155,45 @@ namespace Im_Painter {
 
 		ImGui::End();
 	}
+	
+	void UI::show_menu_toolbar_window(Canvas &canvas) {
+		static float H = 0.0f;
+		static float S = 0.0f;
+		static float V = 0.0f;
+		
+		if (ImGui::Button("Filter HSV")) {
+			ImGui::OpenPopup("hsv_filter");
+		}
+		if (ImGui::BeginPopupModal("hsv_filter")) {
+			ImGui::SliderFloat("Hue", &H, -1.0f, 1.0f);
+			ImGui::SliderFloat("Saturation", &S, -1.0f, 1.0f);
+			ImGui::SliderFloat("Value", &V, -1.0f, 1.0f);
+			
+			canvas.set_hsv_shift(180.0 * H, S, V);
+			
+			if (ImGui::Button("Confirm##hsv_filter")) {
+                // Persist changes
+				canvas.persist_hsv_filtering();
 
+				// Reset state
+				H = 0.0f;
+				S = 0.0f;
+				V = 0.0f;
+                canvas.set_hsv_shift(H, S, V);
+				ImGui::CloseCurrentPopup();
+			}
+            
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel##hsv_filter")) {
+                // Reset state
+                H = 0.0f;
+                S = 0.0f;
+                V = 0.0f;
+                canvas.set_hsv_shift(H, S, V);
+                ImGui::CloseCurrentPopup();
+            }
+			ImGui::EndPopup();
+		}
+		
+	}
 } // namespace Im_Painter

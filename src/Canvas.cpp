@@ -156,7 +156,6 @@ namespace Im_Painter
 
 		layer->update(&active_layer_buffer[0]);
 
-
 		dirty = false;
 	}
 
@@ -226,6 +225,41 @@ namespace Im_Painter
 	bool Canvas::get_layer_visibility(layer_index_t layer_index) {
 		assert(layer_index < layers.size());
 		return layers[layer_index]->is_visible();
+	}
+
+
+	void Canvas::set_hsv_shift(float h, float s, float v) {
+		assert(s <= 1.0f && s >= -1.0f);
+		assert(v <= 1.0f && v >= -1.0f);
+		
+		this->h = h;
+		this->s = s;
+		this->v = v;
+	}
+
+
+	void Canvas::persist_hsv_filtering() {
+		// TODO: the only way to do this is with a framebuffer
+
+		// Read from active layer into buffer
+		layers[active_layer_index]->get_data(active_layer_buffer);
+
+		dirty = true;
+	}
+
+
+	float Canvas::get_hue_shift() {
+		return h;
+	}
+
+
+	float Canvas::get_saturation_shift() {
+		return s;
+	}
+
+
+	float Canvas::get_value_shift() {
+		return v;
 	}
 
 

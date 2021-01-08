@@ -24,6 +24,7 @@ namespace Im_Painter
 		layer_index_t active_layer_index;
 		bool dirty;
 
+		float h, s, v;
 
 		void update_texture();
 
@@ -105,6 +106,23 @@ namespace Im_Painter
 
 
 		bool get_layer_visibility(layer_index_t layer_index);
+        
+        /**
+		 * Given an HSV shift that's been passed to the shader, persist it into the active layer.
+		 */
+		void persist_hsv_filtering();
+
+
+        void set_hsv_shift(float h, float s, float v);
+        
+
+		float get_hue_shift();
+
+
+		float get_saturation_shift();
+
+
+		float get_value_shift(); 
 
 
 		layer_index_t get_active_layer_index();

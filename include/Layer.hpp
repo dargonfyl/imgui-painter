@@ -53,7 +53,9 @@ namespace Im_Painter {
 		 */
 		Texture_id_t get_texture_id();
 
-
+		/**
+		 * Takes this layer's data on the GPU and puts it into a buffer.
+		 */
 		void get_data(std::vector<unsigned char> &buffer);
 
 

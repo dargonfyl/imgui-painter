@@ -19,7 +19,11 @@ namespace Im_Painter
 		 * Keyboard input handler for global operations (i.e. CTRL + S, CTRL + Z, etc.)
 		 */
 		void handle_keyboard(int key);
-
+        
+        /**
+         * Control panel for the majority of functions
+         */
+        void show_menu_toolbar_window(Canvas &canvas);
 
 		/**
 		 * Show layers window, which contains the following functions:
