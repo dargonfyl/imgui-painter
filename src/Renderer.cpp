@@ -4,6 +4,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#ifdef __APPLE__
+#define FRAMEBUFFER_X 800 * 2
+#define FRAMEBUFFER_Y 600 * 2
+#else
+#define FRAMEBUFFER_X 800
+#define FRAMEBUFFER_Y 600
+#endif
+
 
 namespace Im_Painter {
 	Renderer::Renderer(Shader &shader) {
@@ -48,7 +56,7 @@ namespace Im_Painter {
 		assert(texture_colour_buffer != 0);
 		glBindTexture(GL_TEXTURE_2D, texture_colour_buffer);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, FRAMEBUFFER_X, FRAMEBUFFER_Y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_colour_buffer, 0);
@@ -56,7 +64,7 @@ namespace Im_Painter {
 		glGenRenderbuffers(1, &this->RBO);
 		assert(RBO != 0);
 		glBindRenderbuffer(GL_RENDERBUFFER, RBO);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, FRAMEBUFFER_X, FRAMEBUFFER_Y);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 
 		assert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
@@ -73,41 +81,8 @@ namespace Im_Painter {
 	}
 
 
-	void Renderer::render(Texture &texture, unsigned int num_layers) {
-		this->shader.activate();  // TODO: clean this shit up
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(600.0f, 800.0f, 1.0f));  // (height, width, z-scale)
-		shader.set_mat4("u_model", model);
-
-		glm::mat4 projection = glm::ortho(0.0f, 600.0f, 800.0f, 0.0f, -1.0f, 1.0f);
-		shader.set_mat4("u_projection", projection);
-
-		shader.set_int("u_num_layers", num_layers);
-
-		assert(this->VAO != 0 && "VAO == 0 when trying to draw sprite");
-		glBindVertexArray(this->VAO);
-
-		// shader.set_int("u_sprite", GL_TEXTURE0);
-
-		glActiveTexture(GL_TEXTURE0);
-		texture.bind();
-
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		glBindVertexArray(0);
-		glActiveTexture(0);
-		glUseProgram(0);
-	}
-
-
 	void Renderer::render(Canvas &canvas) {
-		// TODO: framebuffer operations on OSX.
-		// glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-		// // glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		// // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		// // glEnable(GL_DEPTH_TEST);
-		// glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
+		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 
 		this->shader.activate();
 
@@ -147,17 +122,21 @@ namespace Im_Painter {
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		}
 
-		// glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		// glDisable(GL_DEPTH_TEST);
-		// // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		// glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-		// glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 
-		// shader.set_bool("u_premultiply", false);
+		glActiveTexture(GL_TEXTURE0);
 
-		// glBindTexture(GL_TEXTURE_2D, texture_colour_buffer);
-		// glDrawArrays(GL_TRIANGLES, 0, 6);
+		framebuffer_shader.activate();
+
+		framebuffer_shader.set_mat4("u_model", model);
+		framebuffer_shader.set_mat4("u_projection", projection);
+
+		glBindTexture(GL_TEXTURE_2D, texture_colour_buffer);
+		glBindVertexArray(this->VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		glBindVertexArray(0);
 		glActiveTexture(0);
