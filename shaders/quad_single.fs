@@ -18,7 +18,7 @@ vec3 rgb_to_hsv(float r, float g, float b) {
 
 	// Hue
 	float h; // in degrees
-	if (max_val == min_val) {
+	if (max_val == min_val) {  // Simple default case. Do NOT increase saturation if this is the case!
 		h = 0.0;
 	} else if (max_val == r) {
 		h = 60.0 * (0.0 + (g - b) / (max_val - min_val));
@@ -83,7 +83,9 @@ void main() {
 
 		// shift
 		hsv.x += u_hue_shift;
-		hsv.y = u_saturation_shift <= 0.0 ? hsv.y * (1.0 + u_saturation_shift) : hsv.y + (1.0 - hsv.y) * u_saturation_shift;
+		if (colour.x != colour.y || colour.y != colour.z) {  // If not grayscale
+			hsv.y = u_saturation_shift <= 0.0 ? hsv.y * (1.0 + u_saturation_shift) : hsv.y + (1.0 - hsv.y) * u_saturation_shift;
+		}
 		hsv.z = u_value_shift <= 0.0 ? hsv.z * (1.0 + u_value_shift) : hsv.z + (1.0 - hsv.z) * u_value_shift;
 
 		vec3 rgb = hsv_to_rgb(hsv.x, hsv.y, hsv.z);
