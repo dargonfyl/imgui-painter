@@ -210,6 +210,7 @@ namespace Im_Painter
 				active_layer_index -= 1;
 			}
 		}
+		delete layers[layer_index];
 		layers.erase(layers.begin() + layer_index);
 
 		layers[active_layer_index]->get_data(active_layer_buffer);
@@ -240,6 +241,7 @@ namespace Im_Painter
 
 	void Canvas::replace_active_layer(unsigned char *data) {
 		// Replace active layer with data buffer
+		active_layer_buffer.clear();
 		active_layer_buffer = std::vector<unsigned char>(data, data + 4 * height * width);
 
 		delete[] data;
