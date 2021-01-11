@@ -97,7 +97,7 @@ namespace Im_Painter {
 
 	void Renderer::render(Canvas &canvas) {
 		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-
+		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		this->shader.activate();
 
 		glm::mat4 model = glm::mat4(1.0f);
@@ -132,7 +132,7 @@ namespace Im_Painter {
 		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -160,7 +160,11 @@ namespace Im_Painter {
 		generate_framebuffer(hsv_FBO, hsv_tex, hsv_RBO);
 
 		assert(hsv_RBO && hsv_tex && hsv_FBO);
-		glBindFramebuffer(GL_FRAMEBUFFER, hsv_FBO);
+
+        glBindFramebuffer(GL_FRAMEBUFFER, hsv_FBO);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  // only 1 layer
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
 		shader.activate();
 		glm::mat4 model = glm::mat4(1.0f);
@@ -171,14 +175,17 @@ namespace Im_Painter {
 		glm::mat4 projection = glm::ortho(0.0f, 600.0f, 800.0f, 0.0f, -1.0f, 1.0f);
 		shader.set_mat4("u_projection", projection);
 
-		glBindVertexArray(VAO);
+		glBindVertexArray(this->VAO);
 
 		shader.set_float("u_hue_shift", canvas.get_hue_shift());
 		shader.set_float("u_saturation_shift", canvas.get_saturation_shift());
 		shader.set_float("u_value_shift", canvas.get_value_shift());
 		shader.set_bool("u_premultiply", false);
 
-		canvas.bind(canvas.get_active_layer_index());
+		glActiveTexture(GL_TEXTURE0);
+		layer_index_t active_layer = canvas.get_active_layer_index();
+        assert(active_layer < canvas.get_num_layers());
+		canvas.bind(active_layer);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -202,19 +209,20 @@ namespace Im_Painter {
 
 		// If macOS, resize for proper dimensions
 		#ifdef __APPLE__
+        unsigned int width = 800;
+        unsigned int height = 600;
+
 		unsigned char *resized_data = (unsigned char *)malloc(sizeof(unsigned char) * 600 * 800 * 4);
-		int result = stbir_resize_uint8(data, 2 * 800, 2 * 600, 0, resized_data, 800, 600, 0, 4);
+		int status_code = stbir_resize_uint8(data, 2 * 800, 2 * 600, 0, resized_data, 800, 600, 0, 4);
 		delete[] data;
-		assert(result);
+		assert(status_code);
 		assert(resized_data);
 
 		// Data will be upside down. Flip so that it's correct.
-		unsigned int width = 800;
-		unsigned int height = 600;
-		for (unsigned int w = 0; w < width; w++) {
-			for (unsigned int h = 0; h < height / 2; h++) {
-				unsigned int old_location = 4 * (h * width + w);
-				unsigned int new_location = 4 * ((height - h - 1) * width + w);
+		for (unsigned int i = 0; i < width; i++) {
+			for (unsigned int j = 0; j < height / 2; j++) {
+				unsigned int old_location = 4 * (j * width + i);
+				unsigned int new_location = 4 * ((height - j - 1) * width + i);
 
 				// Swap
 				unsigned char old_location_channels[4] = {
@@ -229,7 +237,6 @@ namespace Im_Painter {
 				}
 			}
 		}
-
 		return resized_data;
 		#else
 		return data;

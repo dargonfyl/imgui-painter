@@ -9,7 +9,7 @@ namespace Im_Painter {
 		unsigned int total_bytes = 4 * height * width;
 		unsigned char buf[total_bytes];
 
-		memset(buf, static_cast<unsigned char>(50), total_bytes);
+		memset(buf, static_cast<unsigned char>(0), total_bytes);
 
 		texture = new Texture(width, height, 1, buf, RGBA, RGBA);
 		visible = true;
