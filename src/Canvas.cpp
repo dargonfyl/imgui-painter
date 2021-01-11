@@ -238,12 +238,11 @@ namespace Im_Painter
 	}
 
 
-	void Canvas::persist_hsv_filtering() {
-		// TODO: the only way to do this is with a framebuffer
+	void Canvas::replace_active_layer(unsigned char *data) {
+		// Replace active layer with data buffer
+		active_layer_buffer = std::vector<unsigned char>(data, data + 4 * height * width);
 
-		// Read from active layer into buffer
-		layers[active_layer_index]->get_data(active_layer_buffer);
-
+		delete[] data;
 		dirty = true;
 	}
 

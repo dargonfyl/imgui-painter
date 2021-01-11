@@ -155,8 +155,8 @@ namespace Im_Painter {
 
 		ImGui::End();
 	}
-	
-	void UI::show_menu_toolbar_window(Canvas &canvas) {
+
+	void UI::show_menu_toolbar_window(Canvas &canvas, Renderer &renderer) {
 		static float H = 0.0f;
 		static float S = 0.0f;
 		static float V = 0.0f;
@@ -173,7 +173,8 @@ namespace Im_Painter {
 			
 			if (ImGui::Button("Confirm##hsv_filter")) {
                 // Persist changes
-				canvas.persist_hsv_filtering();
+				unsigned char *data = renderer.get_hsv_filtered_layer_buffer(canvas);
+				canvas.replace_active_layer(data);
 
 				// Reset state
 				H = 0.0f;

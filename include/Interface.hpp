@@ -4,7 +4,7 @@
 
 
 #include "Canvas.hpp"
-
+#include "Renderer.hpp"
 
 namespace Im_Painter
 {
@@ -23,7 +23,7 @@ namespace Im_Painter
         /**
          * Control panel for the majority of functions
          */
-        void show_menu_toolbar_window(Canvas &canvas);
+        void show_menu_toolbar_window(Canvas &canvas, Renderer &renderer);
 
 		/**
 		 * Show layers window, which contains the following functions:

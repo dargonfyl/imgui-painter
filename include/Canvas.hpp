@@ -108,9 +108,11 @@ namespace Im_Painter
 		bool get_layer_visibility(layer_index_t layer_index);
         
         /**
-		 * Given an HSV shift that's been passed to the shader, persist it into the active layer.
+		 * Replace the current layer's data. Will set the canvas to dirty, which then will actually replace the GL texture.
+		 * 
+		 * @param data new layer data
 		 */
-		void persist_hsv_filtering();
+		void replace_active_layer(unsigned char *data);
 
 
         void set_hsv_shift(float h, float s, float v);

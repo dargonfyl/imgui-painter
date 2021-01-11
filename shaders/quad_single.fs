@@ -94,6 +94,7 @@ void main() {
 	}
 
 
-	// TODO: we still need to de-multiply for the final product.
-	colour.xyz *= colour.w;
+	// This is here if you want to premultiply for the correct final results.
+	if (u_premultiply)
+		colour.xyz *= colour.w;
 }

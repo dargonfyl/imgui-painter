@@ -196,9 +196,6 @@ int main() {
 		canvas.update_canvas();
 		renderer->render(canvas);
 
-		// Im_Painter::Texture tex = canvas.to_texture();
-		// renderer->render(tex, canvas.get_num_layers());
-
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -206,7 +203,7 @@ int main() {
 		if (show_demo_window)
 			ImGui::ShowDemoWindow(&show_demo_window);
 
-        Im_Painter::UI::show_menu_toolbar_window(canvas);
+        Im_Painter::UI::show_menu_toolbar_window(canvas, *renderer);
 		Im_Painter::UI::show_colours_window(brush);
 
 		if (show_layers_window) {
