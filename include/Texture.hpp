@@ -21,7 +21,6 @@ namespace Im_Painter {
 		Texture_id_t id;
 		unsigned int height, width;
 		GL_image_format_t internal_format, image_format;
-		std::vector<unsigned char> tex;
 
 		public:
 		/**
