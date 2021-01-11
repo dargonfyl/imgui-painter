@@ -45,6 +45,43 @@ namespace {
 
 		return 0;
 	}
+
+#ifdef __APPLE__
+	/**
+	 * This is for macOS retina display shenanigans with framebuffers.
+	 */
+	unsigned char *macos_retina_display_get_framebuffer(unsigned char *data) {
+		unsigned int width = 800;
+        unsigned int height = 600;
+
+		unsigned char *resized_data = (unsigned char *)malloc(sizeof(unsigned char) * 600 * 800 * 4);
+		int status_code = stbir_resize_uint8(data, 2 * 800, 2 * 600, 0, resized_data, 800, 600, 0, 4);
+		delete[] data;
+		assert(status_code);
+		assert(resized_data);
+
+		// Data will be upside down. Flip so that it's correct.
+		for (unsigned int i = 0; i < width; i++) {
+			for (unsigned int j = 0; j < height / 2; j++) {
+				unsigned int old_location = 4 * (j * width + i);
+				unsigned int new_location = 4 * ((height - j - 1) * width + i);
+
+				// Swap
+				unsigned char old_location_channels[4] = {
+					resized_data[old_location],
+					resized_data[old_location + 1],
+					resized_data[old_location + 2],
+					resized_data[old_location + 3],
+				};
+				for (int k = 0; k < 4; k++) {
+					resized_data[old_location + k] = resized_data[new_location + k];
+					resized_data[new_location + k] = old_location_channels[k];
+				}
+			}
+		}
+		return resized_data;
+	} 
+#endif
 } // namespace
 
 
@@ -209,35 +246,23 @@ namespace Im_Painter {
 
 		// If macOS, resize for proper dimensions
 		#ifdef __APPLE__
-        unsigned int width = 800;
-        unsigned int height = 600;
+		return macos_retina_display_get_framebuffer(data);
+		#else
+		return data;
+		#endif
+	}
 
-		unsigned char *resized_data = (unsigned char *)malloc(sizeof(unsigned char) * 600 * 800 * 4);
-		int status_code = stbir_resize_uint8(data, 2 * 800, 2 * 600, 0, resized_data, 800, 600, 0, 4);
-		delete[] data;
-		assert(status_code);
-		assert(resized_data);
 
-		// Data will be upside down. Flip so that it's correct.
-		for (unsigned int i = 0; i < width; i++) {
-			for (unsigned int j = 0; j < height / 2; j++) {
-				unsigned int old_location = 4 * (j * width + i);
-				unsigned int new_location = 4 * ((height - j - 1) * width + i);
+	unsigned char *Renderer::get_data_to_export(Canvas &canvas) {
+		size_t image_size = sizeof(unsigned char) * canvas.get_height() * canvas.get_width() * 4 * 4;
+		unsigned char *data = static_cast<unsigned char *>(malloc(image_size));
 
-				// Swap
-				unsigned char old_location_channels[4] = {
-					resized_data[old_location],
-					resized_data[old_location + 1],
-					resized_data[old_location + 2],
-					resized_data[old_location + 3],
-				};
-				for (int k = 0; k < 4; k++) {
-					resized_data[old_location + k] = resized_data[new_location + k];
-					resized_data[new_location + k] = old_location_channels[k];
-				}
-			}
-		}
-		return resized_data;
+		glBindTexture(GL_TEXTURE_2D, texture_colour_buffer);
+		glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, (void *)data);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		#ifdef __APPLE__
+		return macos_retina_display_get_framebuffer(data);
 		#else
 		return data;
 		#endif

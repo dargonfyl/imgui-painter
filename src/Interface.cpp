@@ -2,6 +2,10 @@
 
 #include <string>
 #include <GLFW/glfw3.h>
+#include <tinyfiledialogs.h>
+#include <iostream>
+
+#include "Image_IO.hpp"
 
 #define LAYER_SAMELINE_EPSILON 0.001f
 
@@ -194,6 +198,15 @@ namespace Im_Painter {
                 ImGui::CloseCurrentPopup();
             }
 			ImGui::EndPopup();
+		}
+
+
+		if (ImGui::Button("Export")) {
+			char const *filters[] = {"*.png"};
+			char const *file = tinyfd_saveFileDialog("Save file", "", 1, filters, "image files");
+			if (file) {
+				Image_IO::write(file, canvas, renderer);				
+			}
 		}
 		
 	}

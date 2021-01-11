@@ -2,7 +2,6 @@
 
 #include <imgui.h>
 
-
 #include "Canvas.hpp"
 #include "Renderer.hpp"
 

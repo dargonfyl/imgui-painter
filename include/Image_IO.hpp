@@ -4,6 +4,7 @@
 
 #include "Texture.hpp"
 #include "Canvas.hpp"
+#include "Renderer.hpp"
 
 
 namespace Im_Painter
@@ -27,15 +28,10 @@ namespace Im_Painter
 		 */
 		void layer_from_image(std::string path, Canvas &canvas);
 
-		/**
-		 * Reads an image from a path.
-		 */
-		// Texture read(const char *path, bool alpha=false);
-
 
 		/**
-		 * Not implemented lol.
+		 * Writes an image to a path.
 		 */
-		void write(std::string path, Canvas &canvas);
+		void write(std::string path, Canvas &canvas, Renderer &renderer);
 	};
 } // namespace Im_Painter

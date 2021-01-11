@@ -44,31 +44,16 @@ namespace Im_Painter {
 	}
 
 
-	// Texture Image_IO::read(const char *path, bool alpha) {
-	// 	int width, height, num_channels;
-	// 	unsigned char *data = stbi_load(path, &width, &height, &num_channels, 0);  // STB mallocs the data
-
-	// 	assert(data && "Im_Painter::Image_IO::read: stbi_load returned no data");
-
-	// 	Texture_Format format = alpha ? RGBA : RGB;
-	// 	Texture tex = Texture(width, height, 1, data, format, format);
-	// 	free(data);
-	// 	return tex;
-	// }
-
-
-	void Image_IO::write(std::string path, Canvas &canvas) {
-		canvas_size_t height = canvas.get_height();
-		canvas_size_t width = canvas.get_width();
+	void Image_IO::write(std::string path, Canvas &canvas, Renderer &renderer) {
 		
 		// How the hell do I get the canvas data?
-		unsigned char *data = canvas.get_data();
-
-		int write_result = stbi_write_png(path.c_str(), width, height, 4, data, 4);
+		unsigned char *data = renderer.get_data_to_export(canvas);
+		assert(data);
+		int write_result = stbi_write_png(path.c_str(), canvas.get_width(), canvas.get_height(), 4, data, canvas.get_width() * 4);
 		delete[] data;
 
-		assert(write_result == 0 && "Image write failed");
-		// if (write_result != 0) {
+		assert(write_result && "Image write failed");
+		// if (write_result == 0) {
 		// 	exit(EXIT_FAILURE);
 		// }
 	}
