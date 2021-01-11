@@ -24,3 +24,7 @@ include(imgui.cmake)
 
 # stb
 include(stb.cmake)
+
+
+# tinydir
+include(tinyfiledialogs.cmake)
